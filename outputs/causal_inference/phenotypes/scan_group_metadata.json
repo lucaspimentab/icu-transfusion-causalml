@@ -1,0 +1,18 @@
+{
+  "benefit_threshold": 0.02,
+  "bootstrap": 500,
+  "embedding": "minirocket",
+  "harm_threshold": 0.02,
+  "k_values": [
+    2,
+    3,
+    5,
+    6
+  ],
+  "legacy_run_dir": "C:\\Users\\lucas\\OneDrive\\Documentos\\Programas\\One\\OneDrive\\Documentos\\Programas\\clsuter\\outputs\\paper_legacy\\runs\\run_cal03_replace_full_w48",
+  "min_pairs": 100,
+  "note": "Groups are reconstructed from legacy embeddings using the same KMeans procedure used in step5_reports.py.",
+  "primary_outcome": "mortality_anytime",
+  "run_id": "run_cal03_replace_full_w48",
+  "window": 48
+}

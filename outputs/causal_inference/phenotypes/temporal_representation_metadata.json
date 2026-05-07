@@ -1,0 +1,13 @@
+{
+  "legacy_run_id": "run_cal03_replace_full_w48",
+  "method": "legacy_minirocket",
+  "n_clustered_stays": 10639,
+  "n_embedding_ids": 10639,
+  "note": "Embeddings imported from the previous cluster-transfusion pipeline; temporal tensor was not recomputed in this package.",
+  "shape": [
+    10639,
+    256
+  ],
+  "source": "legacy_cluster_transfusion",
+  "window_hours": 48
+}

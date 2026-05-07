@@ -1,0 +1,63 @@
+{
+    "total_bytes_written": 0,
+    "total_bytes_read": 0,
+    "rows_returned": 1,
+    "latency": 0.006153548,
+    "result_set_size": 8,
+    "query_name": "COPY pairs TO '/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_noreplace_w48/w48/matching/matched_pairs.csv' (FORMAT CSV, HEADER TRUE)",
+    "blocked_thread_time": 0.0,
+    "system_peak_buffer_memory": 86457792,
+    "system_peak_temp_dir_size": 0,
+    "cpu_time": 0.00011782,
+    "extra_info": {},
+    "cumulative_cardinality": 3836,
+    "cumulative_rows_scanned": 3835,
+    "children": [
+        {
+            "total_bytes_written": 0,
+            "total_bytes_read": 0,
+            "result_set_size": 8,
+            "operator_name": "BATCH_COPY_TO_FILE",
+            "cpu_time": 0.00011782,
+            "extra_info": {},
+            "cumulative_cardinality": 3836,
+            "operator_type": "BATCH_COPY_TO_FILE",
+            "operator_cardinality": 1,
+            "cumulative_rows_scanned": 3835,
+            "operator_rows_scanned": 0,
+            "operator_timing": 0.000059270999999999995,
+            "children": [
+                {
+                    "total_bytes_written": 0,
+                    "total_bytes_read": 0,
+                    "result_set_size": 310635,
+                    "operator_name": "SEQ_SCAN ",
+                    "cpu_time": 0.000058549,
+                    "extra_info": {
+                        "Table": "pairs",
+                        "Type": "Sequential Scan",
+                        "Projections": [
+                            "stay_id_transf",
+                            "stay_id_ctrl",
+                            "propensity_score",
+                            "distance",
+                            "matched_at",
+                            "window_hours",
+                            "criteria",
+                            "match_ratio",
+                            "replace"
+                        ],
+                        "Estimated Cardinality": "3835"
+                    },
+                    "cumulative_cardinality": 3835,
+                    "operator_type": "TABLE_SCAN",
+                    "operator_cardinality": 3835,
+                    "cumulative_rows_scanned": 3835,
+                    "operator_rows_scanned": 3835,
+                    "operator_timing": 0.000058549,
+                    "children": []
+                }
+            ]
+        }
+    ]
+}

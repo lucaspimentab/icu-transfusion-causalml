@@ -1,0 +1,468 @@
+
+
+--- PAGE 1 ---
+Identificac ¸ ˜ao de Fen ´otipos Cl ´ınicos e Desfechos da Transfus ˜ao
+de Hem ´acias em UTI Baseada em Trajet ´orias Fisiol ´ogicas
+Omitted due to blind review
+1Omitted due to blind review
+Abstract.Red blood cell transfusion decisions in ICUs often rely on universal
+thresholds that overlook patient heterogeneity. This study proposes an AI fra-
+mework using MiniRocket and K-means on MIMIC-IV data to identify clinical
+phenotypes with distinct transfusion responses. By segmenting the population
+based on temporal trajectories, we identified benefit and risk macro-phenotypes.
+Results showed a 6.5% mortality reduction in one group, while another had no
+survival gains and required prolonged ventilation. These findings demonstrate
+that transfusion efficacy depends on individual physiological trajectories, sup-
+porting a shift from fixed protocols toward personalized, data-driven transfusion
+medicine.
+Resumo.Decis ˜oes de transfus ˜ao de hem ´acias em UTIs baseiam-se em limia-
+res universais que negligenciam a heterogeneidade dos pacientes. Este estudo
+prop ˜oe um framework de IA utilizando MiniRocket e K-means em dados do
+MIMIC-IV para identificar fen ´otipos cl ´ınicos com respostas distintas `a trans-
+fus˜ao. A populac ¸ ˜ao foi segmentada em macrofen ´otipos de benef ´ıcio e risco
+conforme trajet ´orias temporais. Enquanto um grupo teve reduc ¸ ˜ao de 6,5% na
+mortalidade, outro n ˜ao obteve ganhos e exigiu ventilac ¸ ˜ao mec ˆanica prolongada.
+Os achados demonstram que a efic ´acia transfusional depende de trajet ´orias fi-
+siol´ogicas individuais, apoiando a transic ¸ ˜ao de protocolos fixos para uma me-
+dicina personalizada e baseada em dados.
+1. Introduc ¸ ˜ao
+A transfus ˜ao de concentrado de hem ´acias ´e uma das intervenc ¸ ˜oes terap ˆeuticas mais fre-
+quentes em unidades de terapia intensiva (UTI), sendo indicada principalmente para o
+tratamento da anemia e para o restabelecimento do transporte adequado de oxig ˆenio
+aos tecidos. Estima-se que cerca de 85 milh ˜oes de unidades de hem ´acias sejam trans-
+fundidas anualmente em todo o mundo, refletindo sua relev ˆancia cl ´ınica em pacientes
+cr´ıticos, especialmente aqueles com anemia, coagulopatias ou perda sangu ´ınea significa-
+tiva [Carson et al. 2012].
+Apesar de sua ampla utilizac ¸ ˜ao, a transfus ˜ao n ˜ao´e isenta de riscos. Reac ¸ ˜oes
+transfusionais, sobrecarga vol ˆemica, eventos tromb ´oticos, imunomodulac ¸ ˜ao e aumento
+de custos hospitalares t ˆem sido associados ao uso indiscriminado de hemocomponentes
+[Bolcato 2020]. Ensaios cl ´ınicos randomizados, como o TRICC Trial, fundamentaram a
+adoc ¸ ˜ao de estrat ´egias restritivas, baseadas em limiares de hemoglobina entre 7 e 8 g/dL
+[H´ebert 1999]. Contudo, tais recomendac ¸ ˜oes s ˜ao aplicadas a populac ¸ ˜oes amplas e hete-
+rogˆeneas, n ˜ao contemplando as variac ¸ ˜oes fisiol ´ogicas individuais e fatores como idade,
+comorbidades e par ˆametros laboratoriais que podem influenciar tanto o risco quanto o
+benef ´ıcio da transfus ˜ao [Santos and Santis 2017].
+
+--- PAGE 2 ---
+Na UTI, estrat ´egias cl ´ınicas raramente dependem de um valor laboratorial isolado.
+Elas ocorrem em um contexto din ˆamico, no qual sinais vitais, par ˆametros laboratoriais e
+marcadores de gravidade evoluem continuamente [Seymour 2019]. Assim, pacientes com
+n´ıveis hemoglob ´ınicos semelhantes podem apresentar trajet ´orias cl ´ınicas muito distintas.
+Essa heterogeneidade temporal sugere que o efeito da transfus ˜ao pode n ˜ao ser
+uniforme, mas estar condicionado ao estado fisiol ´ogico dominante e `a trajet ´oria cl ´ınica
+pr´evia `a decis ˜ao terap ˆeutica. Estudos observacionais tradicionais frequentemente ava-
+liam a associac ¸ ˜ao entre a transfus ˜ao e os desfechos de forma agregada e est ´atica, o que
+pode obscurecer diferenc ¸as relevantes entre subgrupos com padr ˜oes evolutivos distintos
+[Vincent 2018].
+Assim, esse trabalho prop ˜oe a identificac ¸ ˜ao de fen ´otipos cl ´ınicos que considerem
+n˜ao apenas em caracter ´ısticas basais, mas tamb ´em em trajet ´orias fisiol ´ogicas que ante-
+cedem a decis ˜ao transfusional em pacientes na primeira admiss ˜ao em UTI. Em seguida,
+dentro de cada fen ´otipo identificado, pacientes transfundidos s ˜ao comparados a um grupo
+controle n ˜ao transfundido, com perfil cl ´ınico e est ´agio temporal semelhantes, utilizando
+estrat ´egias de ajuste para minimizar o vi ´es de selec ¸ ˜ao inerente `a pr´atica cl ´ınica. Essa
+abordagem permite avaliar se a associac ¸ ˜ao entre transfus ˜ao de hem ´acias e mortalidade
+intra-hospitalar varia conforme o padr ˜ao fisiol ´ogico pr ´e-intervenc ¸ ˜ao, investigando em
+quais contextos cl ´ınicos a transfus ˜ao est ´a associada a benef ´ıcio ou a pior progn ´ostico.
+2. Trabalhos Relacionados
+A definic ¸ ˜ao do limiar ideal para transfus ˜ao de concentrado de hem ´acias em pacientes
+cr´ıticos tem sido historicamente orientada por ensaios cl ´ınicos randomizados que com-
+param estrat ´egias transfusionais liberais e restritivas. O estudo TRICC (Transfusion Re-
+quirements in Critical Care) [H ´ebert 1999] comparou uma estrat ´egia liberal (transfus ˜ao
+quando hemoglobina<10 g/dL) com uma estrat ´egia restritiva (hemoglobina<7 g/dL)
+em pacientes cr ´ıticos hemodinamicamente est ´aveis, demostrando que a estrat ´egia restri-
+tiva n ˜ao aumentou a mortalidade em 30 dias e esteve associada a menor exposic ¸ ˜ao trans-
+fusional, estabelecendo um novo paradigma na pr ´atica cl ´ınica. Posteriormente, o TRISS
+(Transfusion Requirements in Septic Shock) [Holst 2014] avaliou essa mesma comparac ¸ ˜ao
+especificamente em pacientes com choque s ´eptico, reforc ¸ando a seguranc ¸a da estrat ´egia
+restritiva tamb ´em em pacientes mais graves.
+Esses estudos consolidaram a adoc ¸ ˜ao de limiares fixos de hemoglobina como base
+para decis ˜ao transfusional em UTI, sustentados por an ´alises baseadas no efeito m ´edio
+do tratamento. No entanto, tais abordagens assumem implicitamente a homogeneidade
+dos efeitos entre pacientes, n ˜ao explorando de forma aprofundada poss ´ıveis variac ¸ ˜oes
+individuais na resposta `a transfus ˜ao.
+A maior parte da evid ˆencia sobre transfus ˜ao em pacientes cr ´ıticos baseia-se na
+estimativa do efeito m ´edio do tratamento na populac ¸ ˜ao. Mesmo quando m ´etodos es-
+tat´ısticos avanc ¸ados s ˜ao empregados para ajustar por fatores de confundimento em dados
+observacionais, o estimador final permanece essencialmente populacional. Um exem-
+plo representativo ´e o ICON (Intensive Care over Nations) [Vincent 2018], que avaliou
+a associac ¸ ˜ao entre a transfus ˜ao e desfechos em pacientes cr ´ıticos, utilizando modelagem
+ajustada para confundidores. Embora robusto, o estudo estima um efeito m ´edio da trans-
+fus˜ao na populac ¸ ˜ao estudada, sem explorar explicitamente variac ¸ ˜oes individuais no efeito
+
+--- PAGE 3 ---
+terap ˆeutico.
+Essa limitac ¸ ˜ao´e conceitualmente relevante. Trabalhos te ´oricos em infer ˆencia cau-
+sal [Pearl 2013] destacam que o efeito m ´edio do tratamento pode mascarar variac ¸ ˜oes subs-
+tanciais no efeito individual. Em contextos de alta variabilidade biol ´ogica, como a UTI,
+o benef ´ıcio ou risco da transfus ˜ao depende de caracter ´ısticas basais, sinais vitais e do
+estado hemodin ˆamico do paciente. Estudos sobre heterogeneidade de efeito terap ˆeutico
+[Iwashyna 2015, Smit 2023] argumentam que focar apenas na m ´edia pode obscurecer
+subgrupos em que o tratamento ´e notoriamente ben ´efico ou delet ´erio.
+Nesse contexto, Ngufor et al. propuseram uma abordagem orientada `a des-
+coberta de subgrupos homog ˆeneos com respostas diferenciais `a transfus ˜ao de plasma
+[Ngufor 2018]. Utilizando clusterizac ¸ ˜ao para identificar grupos cl ´ınicos semelhantes, se-
+guida da estimativa de efeito causal em cada grupo, os autores demonstraram que o efeito
+populacional agregado ocultava padr ˜oes divergentes entre subgrupos. O estudo ilustra o
+argumento metodol ´ogico de que a heterogeneidade de efeito pode ser clinicamente signi-
+ficativa e estatisticamente detect ´avel quando modelada explicitamente.
+Entretanto, mesmo abordagens baseadas em subgrupos assumem, em geral, que o
+paciente pode ser representado por um conjunto fixo de caracter ´ısticas basais. Na UTI,
+essa suposic ¸ ˜ao´e limitada: o risco e a probabilidade de resposta `a transfus ˜ao variam
+ao longo do tempo, acompanhando a evoluc ¸ ˜ao fisiol ´ogica e as intervenc ¸ ˜oes sequenci-
+ais [Yadav 2024]. A heterogeneidade relevante pode n ˜ao apenas ocorrer entre pacientes,
+mas tamb ´em ao longo da trajet ´oria de um mesmo paciente. Modelos que ignoram essa
+dinˆamica capturam variac ¸ ˜oes interindividual, mas n ˜ao as temporais no efeito do trata-
+mento.
+A fenotipagem din ˆamica visa superar as limitac ¸ ˜oes das an ´alises est ´aticas ao cap-
+turar a heterogeneidade intra-paciente e os padr ˜oes evolutivos temporais. Enquanto
+m´etodos cl ´assicos utilizamHidden Markov Models(HMM) ou a modelagem estat ´ıstica
+de s´eries temporais via ARIMA para descrever a evoluc ¸ ˜ao de biomarcadores e prever
+desfechos cl ´ınicos [Sharwardy 2019], a pesquisa recente tem focado em t ´ecnicas mais
+robustas.Abordagens baseadas em transformac ¸ ˜oes de s ´eries temporais, como o algoritmo
+MiniRocket [Dempster 2021], t ˆem se destacado por sua capacidade de extrair “assinatu-
+ras”morfol ´ogicas de evoluc ¸ ˜ao fisiol ´ogica, como tend ˆencias de queda em biomarcadores
+ou instabilidade de sinais vitais, em alta resoluc ¸ ˜ao e com consider ´avel efici ˆencia computa-
+cional [Christiansson 2023, Rodrigues 2022]. Esses m ´etodos permitem capturar n ˜ao ape-
+nas valores agregados, mas tamb ´em a interdepend ˆencia complexa entre vari ´aveis cl ´ınicas
+ao longo do tempo.
+A fronteira atual da fenotipagem temporal reside em sua combinac ¸ ˜ao com in-
+ferˆencia causal [Liu 2023, Bhavani 2022, Xu 2026]. Agrupar pacientes por trajet ´orias
+evolutivas permite estimar o efeito de intervenc ¸ ˜oes em subgrupos homog ˆeneos, re-
+duzindo o vi ´es de selec ¸ ˜ao comum em estudos observacionais em ambientes cl ´ınicos
+[Smit 2023, Robins 2000].
+Embora a fenotipagem temporal e a infer ˆencia causal tenham avanc ¸ado isolada-
+mente na terapia intensiva, a aplicac ¸ ˜ao conjunta desses m ´etodos para investigar o impacto
+da transfus ˜ao de hem ´acias ´e rara na literatura atual. Este trabalho preenche essa lacuna ao
+propor um pipeline integrado, detalhado na pr ´oxima sec ¸ ˜ao.
+
+--- PAGE 4 ---
+3. Metodologia
+A Figura 1 ilustra a metodologia proposta, dividida em tr ˆes etapas principais: (i)
+preparac ¸ ˜ao dos dados, (ii) modelagem temporal e fenotipagem, e (iii) infer ˆencia causal.
+Figura 1. Pipeline metodol ´ogico para fenotipagem din ˆamica e infer ˆencia causal
+da transfus ˜ao em UTI.
+3.1. Pr ´e-processamento e modelagem temporal
+Os dados foram extra ´ıdos do banco de dados MIMIC-IV (v3.1). A coorte foi composta
+por pacientes adultos (≥18 anos) em sua primeira admiss ˜ao na UTI, com perman ˆencia
+m´ınima de 24 horas, a fim de mitigar o vi ´es de depend ˆencia entre m ´ultiplas internac ¸ ˜oes e
+garantir uma janela m ´ınima de observac ¸ ˜ao cl ´ınica. O foco do estudo foi a intervenc ¸ ˜ao de
+transfus ˜ao de concentrado de hem ´acias (RBC), comparando pacientes transfundidos com
+um grupo controle posteriormente pareado na etapa de infer ˆencia causal.
+A selec ¸ ˜ao de vari ´aveis seguiu um crit ´erio de densidade de informac ¸ ˜ao. Foram ini-
+cialmente avaliados 439 atributos cl ´ınicos e laboratoriais candidatos. Vari ´aveis com taxa
+de aus ˆencia superior a 90% foram exclu ´ıdas. O conjunto final utilizou 400 atributos tem-
+porais de entrada (canais), incluindo tanto vari ´aveis cl ´ınicas originais (por exemplo, sinais
+vitais, exames laboratoriais e escores) quanto atributos derivados por engenharia temporal
+(por exemplo, suavizac ¸ ˜oes, estat ´ısticas de janela m ´ovel e tend ˆencias cumulativas). Esses
+400 atributos apresentaram taxa m ´edia de aus ˆencia de 1,4% na janela pr ´e-intervenc ¸ ˜ao.
+
+--- PAGE 5 ---
+As s ´eries foram representadas em umtime-gridde 5 minutos. Do total de 400
+atributos temporais de entrada, 72 derivam de sinais vitais (8 vari ´aveis-base), 183 de
+exames laboratoriais (23), 78 de terapias/intervenc ¸ ˜oes (15) e 67 correspondem a vari ´aveis
+adicionais, incluindo demografia, comorbidades, escores de gravidade e flu ´ıdos.
+Para capturar a din ˆamica pr ´e-intervenc ¸ ˜ao sem incorrer em vi ´es de antecipac ¸ ˜ao,
+os dados foram estruturados como s ´eries temporais e ancorados em um ponto temporal
+t0. Para o grupo transfundido,t 0correspondeu ao instante da administrac ¸ ˜ao da primeira
+unidade de RBC. Para o grupo controle, definiu-se um ponto de ancoragem poroffset
+temporal estat ´ıstico derivado da distribuic ¸ ˜ao do tempo at ´e a transfus ˜ao no grupo transfun-
+dido, assegurando comparabilidade quanto ao est ´agio cl ´ınico pr ´e-intervenc ¸ ˜ao. As s ´eries
+foram ent ˜ao representadas em uma grade temporal regular, permitindo que o algoritmo de
+clusteringcapturasse a morfologia das curvas de resposta fisiol ´ogica.
+A imputac ¸ ˜ao foi aplicada para lidar com aus ˆencia de medic ¸ ˜oes ao longo do tempo.
+Para valores ausentes no in ´ıcio das s ´eries (antes da primeira observac ¸ ˜ao dispon ´ıvel), foram
+utilizados valores padr ˜ao pr ´e-definidos. Ap ´os o primeiro registro observado, aplicou-
+seforward-fill(equivalente aLast Observation Carried Forward– LOCF), propagando
+a´ultima observac ¸ ˜ao dispon ´ıvel at ´e a pr ´oxima medic ¸ ˜ao. Todos os 400 atributos foram
+normalizados por Z-score.
+Para caracterizar a trajet ´oria cl ´ınica pr ´e-intervenc ¸ ˜ao, as vari ´aveis cl ´ınicas base fo-
+ram transformadas em m ´etricas temporais (suavizac ¸ ˜oes, estat ´ısticas de janela m ´ovel e
+tendˆencias cumulativas), que integram o conjunto final de 400 atributos temporais de en-
+trada (canais) utilizado na modelagem:
+1. Suavizac ¸ ˜ao Exponencial (EMA 12h):aplicada para reduzir o ru ´ıdo em sinais vitais e
+exames, atribuindo peso exponencialmente maior a observac ¸ ˜oes recentes.
+2. Estat ´ısticas de Janela M ´ovel:c ´alculo de m ´edias e desvios-padr ˜ao m ´oveis para cap-
+turar variabilidade e instabilidade hemodin ˆamica, permitindo identificar, por exemplo,
+oscilac ¸ ˜oes relevantes na press ˜ao arterial ou saturac ¸ ˜ao de oxig ˆenio.
+3. Tend ˆencias Cumulativas:extrac ¸ ˜ao de estat ´ısticas acumuladas (m ´ınimo, m ´aximo e
+m´edia) desde a admiss ˜ao at ´et0, permitindo distinguir trajet ´orias de melhora gradual de
+padr˜oes de deteriorac ¸ ˜ao aguda.
+3.2. Agrupamento fenot ´ıpico
+Dada a elevada heterogeneidade dos pacientes em estado cr ´ıtico, a aplicac ¸ ˜ao de gatilhos
+transfusionais universais pode ocultar benef ´ıcios ou danos espec ´ıficos em subgrupos. Para
+tratar esta quest ˜ao, implementamos um pipeline de fenotipagem din ˆamica que transita
+de uma an ´alise est ´atica para uma compreens ˜ao das trajet ´orias temporais dos pacientes,
+baseada nas primeiras 24 horas antes do paciente receber a transfus ˜ao.
+Transformac ¸ ˜ao de S ´eries Temporais via MiniRocket:Diferentemente de abordagens
+est´aticas, este estudo utilizou o algoritmo MiniRocket para capturar a complexidade tem-
+poral das trajet ´orias dos pacientes. O MiniRocket ´e uma t ´ecnica de extrac ¸ ˜ao de carac-
+ter´ısticas que utiliza transformac ¸ ˜oes lineares para mapear trajet ´orias cl ´ınicas em vetores
+num´ericos de alta dimens ˜ao via kernels convolucionais de dilatac ¸ ˜ao fixa. Ele permite cap-
+turar padr ˜oes morfol ´ogicos com alta efici ˆencia computacional, dispensando o treinamento
+exaustivo de modelos profundos.
+
+--- PAGE 6 ---
+O MiniRocket aplicou 10.000 kernels convolucionais aleat ´orios `as s´eries tempo-
+rais de 400 vari ´aveis cl ´ınicas. Essa t ´ecnica transforma as trajet ´orias em um espac ¸o de
+alta dimens ˜ao. A principal m ´etrica extra ´ıda foi a Proporc ¸ ˜ao de Valores Positivos (PPV),
+que quantifica a frequ ˆencia com que a resposta do paciente a um determinado kernel
+excede um limiar. Ao contr ´ario de m ´edias ou medianas simples, esta t ´ecnica captura “as-
+sinaturas” morfol ´ogicas nas trajet ´orias, como a velocidade de queda da hemoglobina, a
+variabilidade da frequ ˆencia card ´ıaca e a interdepend ˆencia entre a press ˜ao arterial e a dose
+de vasopressores.
+Espac ¸o Latente e Agrupamento via K-means:A projec ¸ ˜ao via MiniRocket gerou um
+espac ¸o de alta dimens ˜ao, normalizado via Z-score. O n ´umero de clusters foi definido
+ap´os varredura (K=2 a 6) via M ´etodo do Cotovelo e a m ´etrica da silhueta. Optou-se por
+K=2 devido `a estabilidade estat ´ıstica e `a clara distinc ¸ ˜ao cl ´ınica entre macrofen ´otipos de
+benef ´ıcio e risco, servindo de base para a identificac ¸ ˜ao de subgrupos espec ´ıficos, como os
+perfis neurovasculares e hepatobiliares.
+Caracterizac ¸ ˜ao dos Fen ´otipos Din ˆamicos:Essa abordagem permitiu identificar gru-
+pos de pacientes que, embora pudessem apresentar n ´ıveis de hemoglobina semelhantes,
+possu ´ıam trajet ´orias de gravidade e instabilidade fisiol ´ogicas distintas. Os clusters re-
+sultantes representam fen ´otipos baseados na reatividade do paciente ao tratamento e na
+velocidade de deteriorac ¸ ˜ao org ˆanica nas horas anteriores `a decis ˜ao transfusional. Este
+refinamento fenot ´ıpico ´e o que permite, nas etapas seguintes, isolar o efeito causal da
+transfus ˜ao dentro de grupos com perfis de risco e reserva fisiol ´ogica compar ´aveis.
+3.3. Infer ˆencia Causal e Desfechos
+Para mitigar o vi ´es de selec ¸ ˜ao, em que pacientes em estados cl ´ınicos mais cr ´ıticos t ˆem
+inerentemente maior probabilidade de receber transfus ˜ao, e reduzir o impacto do vi ´es
+cognitivo na decis ˜ao cl ´ınica, aplicou-se o Pareamento por Escore de Propens ˜ao (PSM) de
+forma estratificada.
+O escore de propens ˜ao foi estimado por meio de um modelo de regress ˜ao log ´ıstica,
+utilizando 259 covari ´aveis, tanto basais quanto din ˆamicas, capturadas no ponto de anco-
+ragem. Estas inclu ´ıram dados demogr ´aficos (idade, sexo), o ´Indice de Comorbidade de
+Charlson, escores de gravidade aguda (SOFA e SAPS II), al ´em de tend ˆencias dos sinais
+vitais e dos marcadores laboratoriais pr ´e-intervenc ¸ ˜ao.
+O diferencial desta abordagem foi a realizac ¸ ˜ao do pareamento de forma estrati-
+ficada dentro de cada fen ´otipo identificado pelo MiniRocket. Esse procedimento, deno-
+minado Matching Intra-Cluster, restringe a selec ¸ ˜ao de controles ao subespac ¸o de cada
+cluster, garantindo que o efeito da intervenc ¸ ˜ao seja isolado em perfis de risco e trajet ´orias
+fisiol ´ogicas homog ˆeneas. Esta t ´ecnica garantiu que cada paciente transfundido fosse com-
+parado a um controle n ˜ao transfundido que possu ´ıa n˜ao apenas caracter ´ısticas est ´aticas
+similares, mas tamb ´em uma trajet ´oria cl ´ınica e uma morfologia de sinais vitais an ´alogas.
+A robustez do pareamento foi validada pela Diferenc ¸a M ´edia Padronizada (SMD).
+Essa abordagem reduziu o desbalanceamento absoluto m ´edio de 0,156 (pr ´e-pareamento)
+para 0,059 (p ´os-pareamento). O fato de todas as covari ´aveis cr ´ıticas atingirem um
+SMD <0,1confirma a criac ¸ ˜ao de grupos estatisticamente equivalentes, permitindo que
+as diferenc ¸as observadas nos desfechos sejam atribu ´ıdas ao efeito da transfus ˜ao.
+
+--- PAGE 7 ---
+Os desfechos foram selecionados para oferecer uma vis ˜ao multidimensional do
+impacto da transfus ˜ao, abrangendo tanto a sobrevida quanto a carga de suporte org ˆanico
+necess ´aria durante a internac ¸ ˜ao na UTI:.
+Desfecho Prim ´ario:Mortalidade por qualquer causa, incluindo o ´obito intra-hospitalar
+ou p´os-admiss ˜ao, visando determinar o benef ´ıcio da intervenc ¸ ˜ao na sobrevida global.
+Desfechos Secund ´arios e Suporte Org ˆanico:Para avaliar a mortalidade e o uso de re-
+cursos, foram analisados, presenc ¸a de suporte respirat ´orio, analisando o tempo total de
+ventilac ¸ ˜ao mec ˆanica e horas em ventilac ¸ ˜ao invasiva, presenc ¸a de suporte hemodin ˆamico,
+analisando a necessidade de aminas vasoativas e a dose m ´axima de noradrenalina equiva-
+lente necess ´aria para manutenc ¸ ˜ao da estabilidade, e func ¸ ˜ao renal, analisando incid ˆencia
+de fal ˆencia renal aguda com necessidade de Terapia de Substituic ¸ ˜ao Renal.
+O objetivo final da an ´alise foi quantificar o benef ´ıcio ou dano da transfus ˜ao em
+cada subgrupo. Ao comparar os pares, buscou-se identificar quais perfis biol ´ogicos apre-
+sentam reduc ¸ ˜ao significativa de risco, fornecendo evid ˆencias para uma pr ´atica de trans-
+fus˜ao personalizada e guiada por dados.
+4. Resultados
+O desfecho prim ´ario adotado foi a mortalidade hospitalar, operacionalizada como a
+diferenc ¸a absoluta em pontos percentuais (pp) entre o grupo de pacientes transfundidos
+e seus respectivos controles pareados (diff mort = Mort transfundido - Mort controle).
+Essa abordagem de risco absoluto ´e recomendada para expressar o impacto cl ´ınico direto
+das intervenc ¸ ˜oes em sa ´ude [Cochrane 2019].
+Valores negativos indicam associac ¸ ˜ao com benef ´ıcio (diff mort<0), enquanto
+valores positivos indicam associac ¸ ˜ao com maior mortalidade (diff mort>0). A hetero-
+geneidade desse efeito foi explorada em subgrupos fenot ´ıpicos identificados por meio de
+agrupamento n ˜ao supervisionado, conforme detalhado a seguir.
+4.1. Assinatura Fenot ´ıpica dos Subgrupos Cl ´ınicos
+Para compreender a fundo a heterogeneidade da resposta transfusional e justificar os be-
+nef´ıcios observados, ´e essencial analisar a “assinatura”fisiol ´ogica de cada subgrupo. A
+Figura 2 apresenta o mapa de calor das caracter ´ısticas cl ´ınicas dominantes para cada
+fen´otipo gerado, evidenciando as trajet ´orias temporais e o estado basal dos pacientes nas
+horas anteriores `a decis ˜ao transfusional.
+
+--- PAGE 8 ---
+Figura 2. Assinaturas Fisiol ´ogicas dos Fen ´otipos Cl´ ınicos Identificados. O mapa
+de calor exibe os centr ´oides normalizados das principais vari ´aveis cl´ ınicas
+de cada cluster. Cores quentes indicam valores acima da m ´edia populacio-
+nal. Cores frias (azul) indicam valores abaixo da m ´edia. Linhas tracejadas
+separam: 1) Oxigenac ¸ ˜ao, 2) Hemodin ˆamica, 3) Fal ˆencia Org ˆanica.
+O mapa de calor da Figura 2 revela um contraste fisiol ´ogico agudo entre os subgru-
+pos que se beneficiaram da transfus ˜ao (B1–B4) e os que apresentaram associac ¸ ˜ao com ma-
+lef´ıcio (M1–M4). A matriz de desvios padronizados (Z-scores) mostra que o sucesso ou
+o fracasso da terapia transfusional obedece a uma separac ¸ ˜ao estrita, baseada no bin ˆomio
+de perfus ˜ao hemodin ˆamica e de fal ˆencia de ´org˜aos.
+Figura 3. Forest Plot do Efeito da Transfus ˜ao na Mortalidade por Macrofen ´otipo.
+Pontos representam a diferenc ¸a absoluta de mortalidade em pontos per-
+centuais (pp), e barras horizontais IC de 95%. Valores `a esquerda/direita
+da linha tracejada indicam reduc ¸ ˜ao/aumento de mortalidade.
+
+--- PAGE 9 ---
+Eixo de Benef ´ıcio: Perfus ˜ao Preservada e Limitac ¸ ˜ao deDO 2(B1–B4):Os fen ´otipos
+com reduc ¸ ˜ao de mortalidade compartilham uma assinatura de estabilidade hemodin ˆamica
+extrema. Todos os grupos B apresentam press ˜oes arteriais sist ˆemicas consistentemente
+acima da m ´edia populacional (PAM e PAD variando deZ= +0.60a+0.76) e aus ˆencia
+de resposta taquic ´ardica (frequ ˆencia card ´ıacaZ≤ −0.44). A oxigenac ¸ ˜ao´e est´avel (SpO 2
+DP de−0.27a−0.44), enquanto a hemoglobina exibe tend ˆencia de queda aguda pr ´e-
+transfusional (SlopeZ=−0.66no B2 e−0.80no B4). Crucialmente, n ˜ao h´a sinais de
+falˆencia org ˆanica (creatinina e fosfatase alcalina negativas). Essa assinatura estatistica-
+mente valida a hip ´otese de que a transfus ˜ao confere benef ´ıcio quando atua como restabe-
+lecedora da oferta de oxig ˆenio (DO 2) em um organismo compensado que sofre de anemia
+dinˆamica, e n ˜ao como tentativa de ressuscitac ¸ ˜ao no choque ativo.
+Eixo de Malef ´ıcio: Fal ˆencia Org ˆanica e Hipoperfus ˜ao (M1–M4):J ´a os grupos associ-
+ados `a maior mortalidade apresentam assinaturas profundas de instabilidade vasopl ´egica e
+dano a ´org˜aos-alvo. O perfil hemodin ˆamico ´e marcado por hipotens ˜ao severa, sendo o sub-
+grupo M3 o caso mais extremo de baixo fluxo (PAMZ=−1.21e PADZ=−1.34). A
+oxigenac ¸ ˜ao´e err´atica (SpO 2DPZ≥+0.41). A prova de fal ˆencia sist ˆemica materializa-se
+na elevac ¸ ˜ao cr ´ıtica de marcadores de disfunc ¸ ˜ao org ˆanica: os fen ´otipos cardiorrenais (M3 e
+M4) exibem picos severos de creatinina (Z= +1.20e+0.65), enquanto os fen ´otipos he-
+patobiliares (M1 e M2) apresentam elevac ¸ ˜oes massivas de fosfatase alcalina (Z= +1.04
+e+1.19). Adicionalmente, o alto escore SAPS II mantido (MinZde+0.54a+1.26)
+sugere um curso cr ´ıtico sustentado. Neste cen ´ario de extrema gravdade, a transfus ˜ao
+falha em oferecer benef ´ıcio e atua, no melhor dos casos, como um marcador de trajet ´oria
+de deteriorac ¸ ˜ao ou, no pior, como uma sobrecarga inflamat ´oria e vol ˆemica delet ´eria.
+Com esta validac ¸ ˜ao biol ´ogica estabelecida, as sec ¸ ˜oes seguintes detalham o perfil
+de comorbidades e os desfechos quantitativos de cada subgrupo espec ´ıfico.
+4.2. Impacto da Transfus ˜ao na Mortalidade (An ´alise P ´os-PSM)
+A magnitude e a direc ¸ ˜ao do efeito da transfus ˜ao na mortalidade intra-hospitalar, ap ´os o ri-
+goroso pareamento por escore de propens ˜ao (PSM), est ˜ao consolidadas na Figura 3. Note
+que os subgrupos do eixo de hipoperfus ˜ao e fal ˆencia org ˆanica (M1 a M4) apresentaram
+um aumento absoluto de mortalidade variando de+24.31a+26.61pontos percentuais.
+Em contrapartida, os subgrupos caracterizados por estabilidade hemodin ˆamica pr ´evia (B1
+a B4) demonstraram um benef ´ıcio substancial, com reduc ¸ ˜oes de mortalidade atingindo at ´e
+−33.59pp no subgrupo B2. Nenhum dos intervalos de confianc ¸a de 95% cruza a linha
+de efeito nulo, atestando a robustez estat ´ıstica das associac ¸ ˜oes descobertas. A seguir,
+analisamos qualitativamente as caracter ´ısticas de alguns subgrupos, com benef ´ıcios, e de
+outros, com malef ´ıcios, associados `a transfus ˜ao.
+Fen´otipos DO 2-limitado / anemia corrig ´ıvel (B2 e parte de B4): Esse grupo apresenta
+benef ´ıcios com a transfus ˜ao e engloba os subgrupos B2 e parte de B4, cujas principais
+caracter ´ısticas s ˜ao apresentadas na Tabela 1. Os pacientes deste grupo apresentaram Hb
+mediana entre 8–9 g/dL, com queda din ˆamica de Hb (Hb slope negativa) e estabilidade
+de SpO 2, sugerindo aus ˆencia de choque dominante. Esse perfil ´e compat ´ıvel com um
+estado potencialmente DO 2-limitado, em que a transfus ˜ao atua predominantemente como
+correc ¸ ˜ao da oferta de oxig ˆenio.
+
+--- PAGE 10 ---
+Tabela 1. Caracter´ ısticas dos subgrupos B2 e B4
+Parˆametro B2 B4
+Idade m ´edia (anos) 70.39 69.20
+APSIII m ´edio 43.42 43.09
+Hb m ´edia (g/dL) 8.98 8.61
+Hb p50 (g/dL) 8.30 8.10
+Diferenc ¸a mortalidade (pp) -33.59 -31.97
+IC95% [-37.45 ; -29.74] [-35.92 ; -28.02]
+A literatura demonstra que pacientes com doenc ¸a cardiovascular podem apresentar
+menor toler ˆancia `a anemia, especialmente quando coexistem doenc ¸as arteriais coron ´arias
+ou cerebrovasculares [Carson 2023]. Nesses contextos, a restaurac ¸ ˜ao da Hb pode melho-
+rar a relac ¸ ˜ao oferta-demanda mioc ´ardica e cerebral de oxig ˆenio.
+No B4, observou-se maior proporc ¸ ˜ao de casos de doenc ¸a cerebrovascular.
+Evid ˆencias indicam que a anemia est ´a associada a pior progn ´ostico em pacientes com
+A VC e hemorragia subaracnoide, sendo plaus ´ıvel uma maior sensibilidade `a reduc ¸ ˜ao de
+DO 2nesses cen ´arios [Kramer and Zygun 2009]. Contudo, a aus ˆencia de vari ´aveis neu-
+rol´ogicas espec ´ıficas limita a especificac ¸ ˜ao mecan ´ıstica.
+Fen´otipos hepatobiliares cr ´ıticos (M1–M2):Esse grupo apresenta malef ´ıcios associa-
+dos`a transfus ˜ao e engloba os subgrupos M1 e M2. Eles apresentaram fosfatase alcalina
+elevada, associada a alta gravidade (APSIII/SAPSII elevados), compat ´ıvel com disfunc ¸ ˜ao
+hepatobiliar e curso cr ´ıtico sustentado [Liu 2024]. A literatura mostra que a anemia em
+doenc ¸a hep ´atica frequentemente reflete inflamac ¸ ˜ao sist ˆemica, coagulopatia e sangramento
+[Mihaylova 2025].
+Pacientes com fal ˆencia hep ´atica e sepse apresentam maior risco de necessidade
+de transfus ˜ao e de mortalidade elevada [Wang 2025]. Nesses casos, a transfus ˜ao tende a
+acompanhar a deteriorac ¸ ˜ao cl ´ınica e as intervenc ¸ ˜oes invasivas, atuando como marcador
+de trajet ´oria cr ´ıtica [Latona 2025].
+5. Conclus ˜ao
+O presente estudo demonstrou que a resposta `a transfus ˜ao de concentrado de hem ´acias
+em pacientes de UTI ´e heterog ˆenea e intrinsecamente ligada `a trajet ´oria fisiol ´ogica pr ´e-
+intervenc ¸ ˜ao. Ao integrar t ´ecnicas de representac ¸ ˜ao de s ´eries temporais viaMiniRocket
+com infer ˆencia causal estratificada, foi poss ´ıvel superar a limitac ¸ ˜ao dos ”gatilhos univer-
+sais”de hemoglobina, revelando subgrupos em que a intervenc ¸ ˜ao varia de um benef ´ıcio
+substancial a um risco aumentado de mortalidade.
+Os resultados evidenciam que a transfus ˜ao associou-se a uma reduc ¸ ˜ao significativa
+na mortalidade (at ´e−33,59pp no fen ´otipo B2) em pacientes que apresentavam estabili-
+dade hemodin ˆamica, perfus ˜ao preservada e uma queda din ˆamica na hemoglobina. Nestes
+casos, a intervenc ¸ ˜ao parece atuar eficazmente na restaurac ¸ ˜ao da oferta de oxig ˆenio (DO 2)
+em organismos com reserva funcional.
+Em contraste, pacientes com assinaturas de fal ˆencia org ˆanica multissist ˆemica, ins-
+tabilidade vasopl ´egica e disfunc ¸ ˜ao cardiorrenal ou hepatobiliar (fen ´otipos M1–M4) apre-
+
+--- PAGE 11 ---
+sentaram desfechos desfavor ´aveis quando transfundidos, com aumentos de mortalidade
+superiores a23pp. Nestes cen ´arios de alta gravidade e inflamac ¸ ˜ao, a transfus ˜ao pode
+atuar mais como uma sobrecarga vol ˆemica e imunomoduladora do que como um suporte
+hemodin ˆamico efetivo.
+Do ponto de vista metodol ´ogico, o uso de assinaturas morfol ´ogicas mostrou-se
+superior `a an´alise de dados est ´aticos, permitindo identificar que pacientes com n ´ıveis
+idˆenticos de hemoglobina podem pertencer a fen ´otipos opostos de risco. O pipeline pro-
+posto oferece uma prova de conceito para sistemas de suporte `a decis ˜ao cl ´ınica baseados
+em dados, capazes de sugerir intervenc ¸ ˜oes em tempo real.
+Por fim, este trabalho reforc ¸a que a decis ˜ao transfusional n ˜ao deve ser pautada ex-
+clusivamente por limiares laboratoriais isolados, mas sim pela interpretac ¸ ˜ao da trajet ´oria
+dinˆamica do paciente. Futuras investigac ¸ ˜oes devem focar na validac ¸ ˜ao prospectiva desses
+fen´otipos e na inclus ˜ao de vari ´aveis biol ´ogicas mais granulares, visando consolidar uma
+pr´atica transfusional de precis ˜ao que maximize a sobrevida no ambiente cr ´ıtico.
+Para fins de reprodutibilidade, o reposit ´orio com os scripts do nosso projeto est ´a
+dispon ´ıvel publicamente.1
+Refer ˆencias
+Bhavani, S. V . e. a. (2022). Development and validation of novel sepsis subphenotypes
+using trajectories of vital signs.Intensive Care Medicine.
+Bolcato, M. e. a. (2020). Patient blood management: The best approach to transfusion
+medicine risk management.Transfusion and apheresis science : official journal of the
+World Apheresis Association : official journal of the European Society for Haemaphe-
+resis.
+Carson, J. L. et al. (2012).Red Blood Cell Transfusion: A Clinical Practice Guideline
+From the AABB*. Annals of Internal Medicine.
+Carson, J. L. e. a. (2023). Transfusion thresholds and other strategies for guiding alloge-
+neic red blood cell transfusion.Cochrane Database of Systematic Reviews.
+Christiansson, S. (2023). Straight to the heart: Classification of multi-channel ecg-signals
+using minirocket. Master’s thesis.
+Cochrane (2019). Cochrane handbook for systematic reviews of interventions, version
+6.0 (updated july 2019), chapter 15.4.4.
+Dempster, A. e. a. (2021). Minirocket: A very fast (almost) deterministic transform for
+time series classification.Proceedings of the 27th ACM SIGKDD Conference on Kno-
+wledge Discovery & Data Mining.
+H´ebert, P. C. e. a. (1999). A multicenter, randomized, controlled clinical trial of transfu-
+sion requirements in critical care.New England Journal of Medicine.
+Holst, L. B. e. a. (2014). Lower versus higher hemoglobin threshold for transfusion in
+septic shock.New England Journal of Medicine.
+1Repository link omitted due to blind review.
+
+--- PAGE 12 ---
+Iwashyna, T. J. e. a. (2015). Implications of heterogeneity of treatment effect for reporting
+and analysis of randomized trials in critical care.American Journal of Respiratory and
+Critical Care Medicine.
+Kramer, A. H. and Zygun, D. A. (2009). Anemia and red blood cell transfusion in neuro-
+critical care.Critical Care.
+Latona, A. e. a. (2025). Coagulation and transfusion informatics in chronic liver disease:
+a data linkage study of emergency department presentations.EJHaem.
+Liu, P. e. a. (2023). Subphenotyping heterogeneous patients with chronic critical illness to
+guide individualised fluid balance treatment using machine learning: A retrospective
+cohort study.eClinicalMedicine.
+Liu, S. e. a. (2024). Association between alkaline phosphatase to albumin ratio and mor-
+tality among patients with sepsis.Scientific reports.
+Mihaylova, M. e. a. (2025). Anemia in newly diagnosed cases with liver cirrhosis.Acta
+Medica Bulgarica.
+Ngufor, C. e. a. (2018). Identification of clinically meaningful plasma transfusion sub-
+groups using unsupervised random forest clustering.AMIA Annual Symposium Proce-
+edings.
+Pearl, J. (2013).Causality: Models, Reasoning, and Inference. Cambridge University
+Press, 2 edition.
+Robins, J. M. e. a. (2000). Marginal structural models and causal inference in epidemio-
+logy.Epidemiology.
+Rodrigues, D. S. e. a. (2022). Predicting the outcome for covid-19 patients by applying
+time series classification to electronic health records.BMC Medical Informatics and
+Decision Making.
+Santos, F. L. S. and Santis, G. C. D. (2017). Transfusao na emergencia: concentrado de
+hemacias.Revista QualidadeHC.
+Seymour, C. W. e. a. (2019). Derivation, validation, and potential treatment implications
+of novel clinical phenotypes for sepsis.JAMA.
+Sharwardy, S. N. e. a. (2019). Time series parameter prediction for ICU patient. In22nd
+International Conf. on Computer and Information Technology (ICCIT).
+Smit, J. M. e. a. (2023). Causal inference using observational intensive care unit data: A
+scoping review and recommendations for future practice.npj Digital Medicine.
+Vincent, J.-L. e. a. (2018). Worldwide audit of blood transfusion practice in critically ill
+patients.Critical Care.
+Wang, D. e. a. (2025). Prognostic indicators and outcome in patients with acute liver
+failure, sepsis and with and without shock: a retrospective cohort study.Annals of
+Medicine.
+Xu, C. e. a. (2026). Temperature trajectory in septic patients with hypothermia: When the
+ice begins to melt—a retrospective cohort study.Science Progress.
+Yadav, S. K. e. a. (2024). A contemporary review of blood transfusion in critically ill
+patients.Medicina.

@@ -1,0 +1,251 @@
+{
+    "total_bytes_written": 0,
+    "total_bytes_read": 2357051,
+    "rows_returned": 1,
+    "latency": 0.468942102,
+    "result_set_size": 8,
+    "query_name": "COPY (\n        SELECT\n            o.*,\n            COALESCE(t.transfused, 0) AS transfused,\n            t.t0_transf\n        FROM read_csv_auto('/scratch2/lucasp/uti/cluster-transfusion/dataset/outputs_outcomes/outcomes_by_stay_full.csv', SAMPLE_SIZE=100000) o\n        LEFT JOIN transfused_by_stay t\n          ON o.\"stay_id\" = t.stay_id\n        ) TO '/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_noreplace_w48/shared/outcomes_cohort.csv' (FORMAT CSV, HEADER TRUE)",
+    "blocked_thread_time": 0.0,
+    "system_peak_buffer_memory": 293776704,
+    "system_peak_temp_dir_size": 0,
+    "cpu_time": 4.747932893999999,
+    "extra_info": {},
+    "cumulative_cardinality": 187800676,
+    "cumulative_rows_scanned": 1720834094,
+    "children": [
+        {
+            "total_bytes_written": 0,
+            "total_bytes_read": 0,
+            "result_set_size": 8,
+            "operator_name": "COPY_TO_FILE",
+            "cpu_time": 4.747932893999999,
+            "extra_info": {},
+            "cumulative_cardinality": 187800676,
+            "operator_type": "COPY_TO_FILE",
+            "operator_cardinality": 1,
+            "cumulative_rows_scanned": 1720834094,
+            "operator_rows_scanned": 0,
+            "operator_timing": 0.078388436,
+            "children": [
+                {
+                    "total_bytes_written": 0,
+                    "total_bytes_read": 0,
+                    "result_set_size": 3374028,
+                    "operator_name": "PROJECTION",
+                    "cpu_time": 4.669544457999999,
+                    "extra_info": {
+                        "Projections": [
+                            "stay_id",
+                            "mortality_anytime",
+                            "vm_time_hours",
+                            "rrt_on",
+                            "any_vasopressor",
+                            "nee_mcgkgmin_max",
+                            "icu_los_hours",
+                            "ventilation_hours",
+                            "transfused",
+                            "t0_transf"
+                        ],
+                        "Estimated Cardinality": "33991792"
+                    },
+                    "cumulative_cardinality": 187800675,
+                    "operator_type": "PROJECTION",
+                    "operator_cardinality": 40167,
+                    "cumulative_rows_scanned": 1720834094,
+                    "operator_rows_scanned": 0,
+                    "operator_timing": 0.000430225,
+                    "children": [
+                        {
+                            "total_bytes_written": 0,
+                            "total_bytes_read": 0,
+                            "result_set_size": 3374028,
+                            "operator_name": "HASH_JOIN",
+                            "cpu_time": 4.669114232999999,
+                            "extra_info": {
+                                "Join Type": "RIGHT",
+                                "Conditions": "stay_id = stay_id",
+                                "Estimated Cardinality": "33991792"
+                            },
+                            "cumulative_cardinality": 187760508,
+                            "operator_type": "HASH_JOIN",
+                            "operator_cardinality": 40167,
+                            "cumulative_rows_scanned": 1720834094,
+                            "operator_rows_scanned": 0,
+                            "operator_timing": 0.009575418,
+                            "children": [
+                                {
+                                    "total_bytes_written": 0,
+                                    "total_bytes_read": 0,
+                                    "result_set_size": 1124676,
+                                    "operator_name": "PROJECTION",
+                                    "cpu_time": 4.642358354,
+                                    "extra_info": {
+                                        "Projections": [
+                                            "__internal_decompress_integral_bigint(#0, 30000153)",
+                                            "#1",
+                                            "#2"
+                                        ],
+                                        "Estimated Cardinality": "33991792"
+                                    },
+                                    "cumulative_cardinality": 187680174,
+                                    "operator_type": "PROJECTION",
+                                    "operator_cardinality": 40167,
+                                    "cumulative_rows_scanned": 1720775168,
+                                    "operator_rows_scanned": 0,
+                                    "operator_timing": 0.000189336,
+                                    "children": [
+                                        {
+                                            "total_bytes_written": 0,
+                                            "total_bytes_read": 0,
+                                            "result_set_size": 964008,
+                                            "operator_name": "HASH_GROUP_BY",
+                                            "cpu_time": 4.642169018,
+                                            "extra_info": {
+                                                "Groups": "#0",
+                                                "Aggregates": [
+                                                    "max(#1)",
+                                                    "min(#2)"
+                                                ],
+                                                "Estimated Cardinality": "33991792"
+                                            },
+                                            "cumulative_cardinality": 187640007,
+                                            "operator_type": "HASH_GROUP_BY",
+                                            "operator_cardinality": 40167,
+                                            "cumulative_rows_scanned": 1720775168,
+                                            "operator_rows_scanned": 0,
+                                            "operator_timing": 0.29907085699999997,
+                                            "children": [
+                                                {
+                                                    "total_bytes_written": 0,
+                                                    "total_bytes_read": 0,
+                                                    "result_set_size": 1125599040,
+                                                    "operator_name": "PROJECTION",
+                                                    "cpu_time": 4.3430981609999995,
+                                                    "extra_info": {
+                                                        "Projections": [
+                                                            "stay_id",
+                                                            "CASE  WHEN (#1) THEN (1) ELSE 0 END",
+                                                            "CASE  WHEN (#1) THEN ((CAST(tbin AS DECIMAL(21,0)) * 1.0)) ELSE NULL END"
+                                                        ],
+                                                        "Estimated Cardinality": "53774224"
+                                                    },
+                                                    "cumulative_cardinality": 187599840,
+                                                    "operator_type": "PROJECTION",
+                                                    "operator_cardinality": 46899960,
+                                                    "cumulative_rows_scanned": 1720775168,
+                                                    "operator_rows_scanned": 0,
+                                                    "operator_timing": 0.30516422100000007,
+                                                    "children": [
+                                                        {
+                                                            "total_bytes_written": 0,
+                                                            "total_bytes_read": 0,
+                                                            "result_set_size": 609699480,
+                                                            "operator_name": "PROJECTION",
+                                                            "cpu_time": 4.037933939999999,
+                                                            "extra_info": {
+                                                                "Projections": [
+                                                                    "__internal_compress_integral_uinteger(#0, 30000153)",
+                                                                    "#1",
+                                                                    "#2"
+                                                                ],
+                                                                "Estimated Cardinality": "53774224"
+                                                            },
+                                                            "cumulative_cardinality": 140699880,
+                                                            "operator_type": "PROJECTION",
+                                                            "operator_cardinality": 46899960,
+                                                            "cumulative_rows_scanned": 1720775168,
+                                                            "operator_rows_scanned": 0,
+                                                            "operator_timing": 0.023313073000000004,
+                                                            "children": [
+                                                                {
+                                                                    "total_bytes_written": 0,
+                                                                    "total_bytes_read": 0,
+                                                                    "result_set_size": 797299320,
+                                                                    "operator_name": "PROJECTION",
+                                                                    "cpu_time": 4.014620867,
+                                                                    "extra_info": {
+                                                                        "Projections": [
+                                                                            "stay_id",
+                                                                            "(rbc_transfusion_flag > 0)",
+                                                                            "tbin"
+                                                                        ],
+                                                                        "Estimated Cardinality": "53774224"
+                                                                    },
+                                                                    "cumulative_cardinality": 93799920,
+                                                                    "operator_type": "PROJECTION",
+                                                                    "operator_cardinality": 46899960,
+                                                                    "cumulative_rows_scanned": 1720775168,
+                                                                    "operator_rows_scanned": 0,
+                                                                    "operator_timing": 0.17164164599999995,
+                                                                    "children": [
+                                                                        {
+                                                                            "total_bytes_written": 0,
+                                                                            "total_bytes_read": 0,
+                                                                            "result_set_size": 1125599040,
+                                                                            "operator_name": "READ_PARQUET ",
+                                                                            "cpu_time": 3.842979221,
+                                                                            "extra_info": {
+                                                                                "Function": "READ_PARQUET",
+                                                                                "Projections": [
+                                                                                    "stay_id",
+                                                                                    "rbc_transfusion_flag",
+                                                                                    "tbin"
+                                                                                ],
+                                                                                "Estimated Cardinality": "53774224",
+                                                                                "Total Files Read": "56"
+                                                                            },
+                                                                            "cumulative_cardinality": 46899960,
+                                                                            "operator_type": "TABLE_SCAN",
+                                                                            "operator_cardinality": 46899960,
+                                                                            "cumulative_rows_scanned": 1720775168,
+                                                                            "operator_rows_scanned": 1720775168,
+                                                                            "operator_timing": 3.842979221,
+                                                                            "children": []
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "total_bytes_written": 0,
+                                    "total_bytes_read": 0,
+                                    "result_set_size": 2570688,
+                                    "operator_name": "READ_CSV_AUTO ",
+                                    "cpu_time": 0.017180461,
+                                    "extra_info": {
+                                        "Function": "READ_CSV_AUTO",
+                                        "Projections": [
+                                            "stay_id",
+                                            "mortality_anytime",
+                                            "vm_time_hours",
+                                            "rrt_on",
+                                            "any_vasopressor",
+                                            "nee_mcgkgmin_max",
+                                            "icu_los_hours",
+                                            "ventilation_hours"
+                                        ],
+                                        "Estimated Cardinality": "58926",
+                                        "Total Files Read": "1"
+                                    },
+                                    "cumulative_cardinality": 40167,
+                                    "operator_type": "TABLE_SCAN",
+                                    "operator_cardinality": 40167,
+                                    "cumulative_rows_scanned": 58926,
+                                    "operator_rows_scanned": 58926,
+                                    "operator_timing": 0.017180461,
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

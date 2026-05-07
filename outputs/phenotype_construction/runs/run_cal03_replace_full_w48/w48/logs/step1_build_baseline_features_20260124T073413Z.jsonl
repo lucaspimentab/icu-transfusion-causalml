@@ -1,0 +1,12 @@
+{"ts": "2026-01-24T07:34:13.355112+00:00", "event": "logger_ready", "run_name": "step1_build_baseline_features", "log_path": "/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_replace_full_w48/w48/logs/step1_build_baseline_features_20260124T073413Z.jsonl"}
+{"ts": "2026-01-24T07:34:13.372203+00:00", "event": "profiling_enabled", "path": "/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_replace_full_w48/w48/profiling/step1_build_baseline_features.json"}
+{"ts": "2026-01-24T07:34:14.893246+00:00", "event": "schema_report_written", "path": "/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_replace_full_w48/shared/schema_report.txt"}
+{"ts": "2026-01-24T07:34:14.893426+00:00", "event": "schema_inferred", "stay_col": "stay_id", "time_col": "tbin", "transfusion_cols": ["rbc_transfusion_flag"], "outcomes_transf_col": null}
+{"ts": "2026-01-24T07:34:14.893506+00:00", "event": "build_t0_table_start"}
+{"ts": "2026-01-24T07:34:16.737253+00:00", "event": "t0_table_written", "path": "/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_replace_full_w48/shared/t0_table.parquet", "n_stays": 40167, "n_transfused": 10639, "median_t0_offset_minutes": 490.0}
+{"ts": "2026-01-24T07:34:16.737466+00:00", "event": "build_t0_table_end", "elapsed_seconds": 1.8439592509530485}
+{"ts": "2026-01-24T07:34:16.739421+00:00", "event": "build_baseline_features_start", "window": 48}
+{"ts": "2026-01-24T07:34:31.603468+00:00", "event": "baseline_features_written", "path": "/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_replace_full_w48/w48/features/baseline_features.parquet", "rows": 40167, "window_hours": 48}
+{"ts": "2026-01-24T07:34:31.603694+00:00", "event": "build_baseline_features_end", "elapsed_seconds": 14.864271803991869, "window": 48}
+{"ts": "2026-01-24T07:34:31.613126+00:00", "event": "baseline_counts", "n_rows": 40167, "n_stays": 40167, "duplicate_stay_rows": 0}
+{"ts": "2026-01-24T07:34:31.613284+00:00", "event": "step1_complete", "baseline_path": "/scratch2/lucasp/uti/cluster-transfusion/outputs/runs/run_cal03_replace_full_w48/w48/features/baseline_features.parquet"}
