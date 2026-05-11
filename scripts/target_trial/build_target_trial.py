@@ -85,6 +85,19 @@ def _outcome_candidates(config: dict[str, Any]) -> list[Path]:
     return [p for p in priority if p.exists()]
 
 
+def _treatment_candidates(config: dict[str, Any]) -> list[Path]:
+    processed = _path_from_config(config, "processed_dir", "outputs/causal_inference/processed")
+    priority = [
+        processed / "treatment.parquet",
+        processed / "cohort.parquet",
+        REPO_ROOT / "outputs" / "processed" / "treatment.parquet",
+        REPO_ROOT / "outputs" / "processed" / "cohort.parquet",
+        REPO_ROOT / "outputs" / "causal_inference" / "processed" / "treatment.parquet",
+        REPO_ROOT / "outputs" / "causal_inference" / "processed" / "cohort.parquet",
+    ]
+    return [p for p in priority if p.exists()]
+
+
 def _normalize_longitudinal_columns(df: pd.DataFrame, config: dict[str, Any]) -> tuple[pd.DataFrame, dict[str, Any], list[str]]:
     trial = config.get("target_trial", {})
     tt = trial.get("time_zero", {})
@@ -212,6 +225,83 @@ def _normalize_longitudinal_columns(df: pd.DataFrame, config: dict[str, Any]) ->
     return normalized, notes, missing
 
 
+def _normalize_treatment_columns(df: pd.DataFrame, config: dict[str, Any]) -> tuple[pd.DataFrame, list[str]]:
+    tt = config.get("target_trial", {}).get("time_zero", {})
+    trt = config.get("target_trial", {}).get("treatment", {})
+    columns_cfg = config.get("columns", {})
+    id_col = tt.get("id_col", "stay_id")
+    fallback_col = trt.get("fallback_treatment_col", "transfused")
+    fallback_time_col = trt.get("fallback_treatment_time_col", "t0")
+
+    out = df.copy()
+    id_source = _first_column(out, [id_col, columns_cfg.get("id", ""), "stay_id", "icustay_id", "icu_stay_id", "stay"])
+    if id_source and id_source != id_col:
+        out[id_col] = out[id_source]
+
+    treatment_source = _first_column(
+        out,
+        [
+            fallback_col,
+            columns_cfg.get("treatment_name", ""),
+            columns_cfg.get("treatment", ""),
+            "transfused",
+            "treated",
+            "treatment",
+            "A",
+            "rbc_transfusion_flag",
+            "rbc_transfusion",
+            "any_rbc_transfusion",
+        ],
+    )
+    if treatment_source and treatment_source != fallback_col:
+        out[fallback_col] = out[treatment_source]
+
+    time_source = _first_column(
+        out,
+        [
+            fallback_time_col,
+            "t0",
+            "t0_transf",
+            "treatment_time",
+            "first_transfusion_time",
+            "first_rbc_time",
+            "pseudo_t0",
+        ],
+    )
+    if time_source and time_source != fallback_time_col:
+        out[fallback_time_col] = out[time_source]
+
+    missing = [col for col in [id_col, fallback_col] if col not in out.columns]
+    return out, missing
+
+
+def _merge_imported_treatment(longitudinal: pd.DataFrame, config: dict[str, Any]) -> tuple[pd.DataFrame, dict[str, Any]]:
+    tt = config.get("target_trial", {}).get("time_zero", {})
+    trt = config.get("target_trial", {}).get("treatment", {})
+    id_col = tt.get("id_col", "stay_id")
+    fallback_col = trt.get("fallback_treatment_col", "transfused")
+    fallback_time_col = trt.get("fallback_treatment_time_col", "t0")
+    if fallback_col in longitudinal.columns:
+        return longitudinal, {}
+
+    for path in _treatment_candidates(config):
+        try:
+            treatment, missing = _normalize_treatment_columns(read_table(path), config)
+        except Exception:
+            continue
+        if missing:
+            continue
+        keep = [id_col, fallback_col]
+        if fallback_time_col in treatment.columns:
+            keep.append(fallback_time_col)
+        if "pseudo_t0" in treatment.columns and "pseudo_t0" not in keep:
+            keep.append("pseudo_t0")
+        imported = treatment[keep].drop_duplicates(id_col)
+        merged = longitudinal.merge(imported, on=id_col, how="left")
+        return merged, {"imported_treatment_path": str(path), "imported_treatment_columns": keep}
+    return longitudinal, {}
+
+
 def _format_source_errors(errors: list[dict[str, Any]]) -> str:
     lines = []
     for item in errors[:12]:
@@ -262,6 +352,8 @@ def load_longitudinal_and_outcomes(config: dict[str, Any]) -> tuple[pd.DataFrame
         return longitudinal, outcomes, metadata
 
     try:
+        longitudinal, treatment_notes = _merge_imported_treatment(longitudinal, config)
+        normalization_notes.update(treatment_notes)
         outcomes = read_table(outcome_path)
         metadata.update(
             {
@@ -290,6 +382,7 @@ def first_eligible_times(longitudinal: pd.DataFrame, config: dict[str, Any]) -> 
     threshold = float(elig.get("hemoglobin_threshold", 8.0))
     min_age = float(elig.get("min_age", 18))
     min_pre_min = float(elig.get("min_pre_hours", 6)) * 60.0
+    use_imported_t0 = bool(tt.get("use_imported_t0_if_available", True))
 
     required = {id_col, time_col, hb_col}
     missing = required - set(longitudinal.columns)
@@ -303,6 +396,20 @@ def first_eligible_times(longitudinal: pd.DataFrame, config: dict[str, Any]) -> 
     df[time_col] = pd.to_numeric(df[time_col], errors="coerce")
     df[hb_col] = pd.to_numeric(df[hb_col], errors="coerce")
     df = df.dropna(subset=[id_col, time_col, hb_col])
+
+    if use_imported_t0 and "t0" in df.columns and "transfused" in df.columns:
+        df["t0"] = pd.to_numeric(df["t0"], errors="coerce")
+        df = df.dropna(subset=["t0"])
+        agg_spec: dict[str, Any] = {"t0": ("t0", "first"), "first_observed_time": (time_col, "min")}
+        if subject_col in df.columns:
+            agg_spec[subject_col] = (subject_col, "first")
+        first = df.groupby(id_col, as_index=False).agg(**agg_spec)
+        first["pre_observation_minutes"] = first["t0"] - first["first_observed_time"]
+        first = first[first["pre_observation_minutes"] >= min_pre_min].copy()
+        first["eligible"] = 1
+        first["eligibility_rule"] = "imported_t0_from_existing_cohort"
+        return first
+
     low = df[df[hb_col] <= threshold].sort_values([id_col, time_col])
     first = low.groupby(id_col, as_index=False).first()
     first = first[[id_col, time_col] + ([subject_col] if subject_col in first.columns else [])].rename(columns={time_col: "t0"})
@@ -338,13 +445,17 @@ def assign_treatment(longitudinal: pd.DataFrame, eligibility: pd.DataFrame, conf
         out["treatment_source"] = event_col
         return out
 
-    fallback_cols = [c for c in [id_col, fallback_col, fallback_time_col] if c in longitudinal.columns]
+    fallback_cols = [c for c in [id_col, fallback_col] if c in longitudinal.columns]
     if fallback_col in fallback_cols:
         tmp = longitudinal[fallback_cols].drop_duplicates(id_col)
+        fallback_time_merge_col = "_fallback_treatment_time"
+        if fallback_time_col in longitudinal.columns:
+            times = longitudinal[[id_col, fallback_time_col]].drop_duplicates(id_col).rename(columns={fallback_time_col: fallback_time_merge_col})
+            tmp = tmp.merge(times, on=id_col, how="left")
         out = out.merge(tmp, on=id_col, how="left")
         out["transfused"] = pd.to_numeric(out[fallback_col], errors="coerce").fillna(0).astype(int)
-        if fallback_time_col in out.columns:
-            tx_time = pd.to_numeric(out[fallback_time_col], errors="coerce")
+        if fallback_time_merge_col in out.columns:
+            tx_time = pd.to_numeric(out[fallback_time_merge_col], errors="coerce")
             out.loc[(out["transfused"] == 1) & ((tx_time < out["t0"]) | (tx_time > out["t0"] + window_min)), "transfused"] = 0
             out["treatment_time"] = tx_time.where(out["transfused"] == 1, np.nan)
         out["treatment_source"] = fallback_col
@@ -412,6 +523,15 @@ def build_target_trial(config_dir: str) -> None:
     keep_outcomes = [id_col] + [c for c in [primary] + secondary if c in outcomes.columns]
     trial = treatment.merge(features, on=id_col, how="inner").merge(outcomes[keep_outcomes].drop_duplicates(id_col), on=id_col, how="left")
     trial = trial.dropna(subset=[primary, "transfused"]).copy()
+    n_treated = int(trial["transfused"].sum()) if "transfused" in trial.columns else 0
+    n_control = int((1 - trial["transfused"]).sum()) if "transfused" in trial.columns else 0
+    if n_treated == 0 or n_control == 0:
+        save_table(trial, proc / "trial_dataset.parquet")
+        raise RuntimeError(
+            "Target-trial dataset has no treatment contrast after anchoring "
+            f"(treated={n_treated}, controls={n_control}). "
+            "Use a longitudinal source with both transfused and control stays, or import the matched control cohort from the paper pipeline."
+        )
 
     split = config["target_trial"].get("split", {})
     seed = int(config["target_trial"].get("seed", 42))
@@ -431,8 +551,8 @@ def build_target_trial(config_dir: str) -> None:
             **metadata,
             "n_eligible": int(len(eligibility)),
             "n_trial": int(len(trial)),
-            "n_treated": int(trial["transfused"].sum()),
-            "n_control": int((1 - trial["transfused"]).sum()),
+            "n_treated": n_treated,
+            "n_control": n_control,
             "primary_outcome": primary,
             "feature_columns": feature_cols,
             "outcome_columns": outcome_cols,
@@ -440,7 +560,7 @@ def build_target_trial(config_dir: str) -> None:
             "warning": "Use only as confirmatory if all included features are pre-t0.",
         },
     )
-    print(f"target_trial_complete n={len(trial)} treated={int(trial['transfused'].sum())} controls={int((1-trial['transfused']).sum())}")
+    print(f"target_trial_complete n={len(trial)} treated={n_treated} controls={n_control}")
 
 
 def main() -> None:
