@@ -14,7 +14,6 @@ if str(REPO_ROOT) not in sys.path:
 
 from scripts.common.target_trial_utils import (  # noqa: E402
     candidate_feature_columns,
-    existing_table,
     load_trial_config,
     make_synthetic_longitudinal,
     output_root,
@@ -25,6 +24,10 @@ from scripts.common.target_trial_utils import (  # noqa: E402
 )
 
 
+TABLE_SUFFIXES = {".parquet", ".csv", ".pkl", ".pickle"}
+BIN_TIME_COLUMNS = {"bin_idx", "bin", "time_bin", "time_idx", "tbin", "charttime_bin"}
+
+
 def _path_from_config(config: dict[str, Any], key: str, default: str) -> Path:
     value = config.get("paths", {}).get(key, default)
     path = Path(value)
@@ -33,29 +36,225 @@ def _path_from_config(config: dict[str, Any], key: str, default: str) -> Path:
     return path
 
 
-def load_longitudinal_and_outcomes(config: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+def _first_column(df: pd.DataFrame, candidates: list[str]) -> str | None:
+    by_lower = {str(c).lower(): c for c in df.columns}
+    for candidate in candidates:
+        if candidate and candidate.lower() in by_lower:
+            return by_lower[candidate.lower()]
+    return None
+
+
+def _table_files(path: Path) -> list[Path]:
+    if path.is_file() and path.suffix.lower() in TABLE_SUFFIXES:
+        return [path]
+    if not path.exists():
+        return []
+    return sorted(p for p in path.rglob("*") if p.is_file() and p.suffix.lower() in TABLE_SUFFIXES)
+
+
+def _longitudinal_candidates(config: dict[str, Any]) -> list[Path]:
     processed = _path_from_config(config, "processed_dir", "outputs/causal_inference/processed")
     timegrid = _path_from_config(config, "timegrid_dir", "dataset/timegrid_features")
-    outcomes_file = _path_from_config(config, "outcomes_file", "dataset/outputs_outcomes/outcomes_by_stay_full.csv")
-    candidates = [
+    priority = [
         processed / "raw_temporal.parquet",
-        timegrid,
+        REPO_ROOT / "outputs" / "processed" / "raw_temporal.parquet",
+        REPO_ROOT / "outputs" / "causal_inference" / "processed" / "raw_temporal.parquet",
     ]
-    source_path = existing_table([p for p in candidates if p.is_file()])
-    if source_path is None and timegrid.exists():
-        files = sorted([p for p in timegrid.rglob("*") if p.suffix.lower() in {".parquet", ".csv", ".pkl", ".pickle"}])
-        source_path = files[0] if files else None
+    candidates = [p for p in priority if p.exists()]
+    candidates.extend(_table_files(timegrid))
 
-    outcome_candidates = [
+    unique: list[Path] = []
+    seen: set[str] = set()
+    for path in candidates:
+        key = str(path.resolve()) if path.exists() else str(path)
+        if key not in seen:
+            seen.add(key)
+            unique.append(path)
+    return unique
+
+
+def _outcome_candidates(config: dict[str, Any]) -> list[Path]:
+    processed = _path_from_config(config, "processed_dir", "outputs/causal_inference/processed")
+    outcomes_file = _path_from_config(config, "outcomes_file", "dataset/outputs_outcomes/outcomes_by_stay_full.csv")
+    priority = [
         processed / "outcomes.parquet",
+        REPO_ROOT / "outputs" / "processed" / "outcomes.parquet",
+        REPO_ROOT / "outputs" / "causal_inference" / "processed" / "outcomes.parquet",
         outcomes_file,
     ]
-    outcome_path = existing_table([p for p in outcome_candidates if p.exists()])
+    return [p for p in priority if p.exists()]
 
+
+def _normalize_longitudinal_columns(df: pd.DataFrame, config: dict[str, Any]) -> tuple[pd.DataFrame, dict[str, Any], list[str]]:
+    trial = config.get("target_trial", {})
+    tt = trial.get("time_zero", {})
+    elig = trial.get("eligibility", {})
+    trt = trial.get("treatment", {})
+    columns_cfg = config.get("columns", {})
+
+    id_col = tt.get("id_col", "stay_id")
+    subject_col = tt.get("subject_col", "subject_id")
+    time_col = tt.get("time_col", "time_min")
+    hb_col = elig.get("hemoglobin_col", "hemoglobin")
+    event_col = trt.get("event_col", "rbc_transfusion_flag")
+
+    normalized = df.copy()
+    notes: dict[str, Any] = {}
+
+    id_source = _first_column(normalized, [id_col, columns_cfg.get("id", ""), "stay_id", "icustay_id", "icu_stay_id", "stay"])
+    if id_source and id_source != id_col:
+        normalized[id_col] = normalized[id_source]
+        notes["id_alias"] = id_source
+
+    subject_source = _first_column(normalized, [subject_col, columns_cfg.get("subject_id", ""), "subject_id", "patient_id"])
+    if subject_source and subject_source != subject_col:
+        normalized[subject_col] = normalized[subject_source]
+        notes["subject_alias"] = subject_source
+
+    time_source = _first_column(
+        normalized,
+        [
+            time_col,
+            columns_cfg.get("time", ""),
+            "time_min",
+            "time_minutes",
+            "minutes",
+            "minute",
+            "offset_min",
+            "offset_minutes",
+            "minutes_from_t0",
+            "relative_time_min",
+            "relative_time_minutes",
+            "bin_start_min",
+            "bin_start_minutes",
+            "tbin",
+            "charttime_bin",
+            "bin_idx",
+            "bin",
+            "time_bin",
+            "time_idx",
+            "chartoffset",
+            "offset",
+        ],
+    )
+    if time_source:
+        values = pd.to_numeric(normalized[time_source], errors="coerce")
+        if time_source.lower() in BIN_TIME_COLUMNS:
+            step = float(config.get("preprocessing", {}).get("time_step_minutes", 60))
+            values = values * step
+            notes["time_alias"] = f"{time_source}*{step:g}"
+        elif time_source != time_col:
+            notes["time_alias"] = time_source
+        normalized[time_col] = values
+    else:
+        hour_source = _first_column(
+            normalized,
+            [
+                "time_hour",
+                "time_hours",
+                "hours",
+                "hour",
+                "offset_hour",
+                "offset_hours",
+                "hours_from_admission",
+                "hour_from_admission",
+                "relative_time_hours",
+            ],
+        )
+        if hour_source:
+            normalized[time_col] = pd.to_numeric(normalized[hour_source], errors="coerce") * 60.0
+            notes["time_alias"] = f"{hour_source}*60"
+        else:
+            datetime_source = _first_column(normalized, ["charttime", "timestamp", "time", "datetime"])
+            if datetime_source and id_col in normalized.columns:
+                dt = pd.to_datetime(normalized[datetime_source], errors="coerce")
+                first_dt = dt.groupby(normalized[id_col]).transform("min")
+                normalized[time_col] = (dt - first_dt).dt.total_seconds() / 60.0
+                notes["time_alias"] = f"{datetime_source}-first_observed"
+
+    hb_source = _first_column(
+        normalized,
+        [
+            hb_col,
+            "hemoglobin",
+            "haemoglobin",
+            "hb",
+            "hgb",
+            "hemoglobin_mean",
+            "hemoglobin_last",
+            "hb_mean",
+            "hgb_mean",
+        ],
+    )
+    if hb_source and hb_source != hb_col:
+        normalized[hb_col] = normalized[hb_source]
+        notes["hemoglobin_alias"] = hb_source
+
+    event_source = _first_column(
+        normalized,
+        [
+            event_col,
+            "rbc_transfusion_flag",
+            "rbc_transfusion",
+            "transfusion_flag",
+            "transfusion",
+            "any_rbc_transfusion",
+            "packed_rbc",
+            "prbc",
+        ],
+    )
+    if event_source and event_source != event_col:
+        normalized[event_col] = normalized[event_source]
+        notes["event_alias"] = event_source
+
+    required = [id_col, time_col, hb_col]
+    missing = [col for col in required if col not in normalized.columns]
+    return normalized, notes, missing
+
+
+def _format_source_errors(errors: list[dict[str, Any]]) -> str:
+    lines = []
+    for item in errors[:12]:
+        columns = ", ".join(item.get("columns", [])[:25])
+        lines.append(f"- {item['path']}: missing={item.get('missing', [])}; columns=[{columns}]")
+    extra = len(errors) - len(lines)
+    if extra > 0:
+        lines.append(f"- ... {extra} more candidate tables not shown")
+    return "\n".join(lines)
+
+
+def load_longitudinal_and_outcomes(config: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     trial = config.get("target_trial", {})
     allow_synth = bool(trial.get("allow_synthetic_fallback", True))
     metadata: dict[str, Any] = {"synthetic": False}
-    if source_path is None or outcome_path is None:
+    source_errors: list[dict[str, Any]] = []
+    source_path: Path | None = None
+    longitudinal: pd.DataFrame | None = None
+    normalization_notes: dict[str, Any] = {}
+
+    for candidate in _longitudinal_candidates(config):
+        try:
+            raw = read_table(candidate)
+            normalized, notes, missing = _normalize_longitudinal_columns(raw, config)
+            if not missing:
+                source_path = candidate
+                longitudinal = normalized
+                normalization_notes = notes
+                break
+            source_errors.append({"path": str(candidate), "missing": missing, "columns": [str(c) for c in raw.columns]})
+        except Exception as exc:
+            source_errors.append({"path": str(candidate), "missing": ["read_error"], "columns": [str(exc)]})
+
+    outcome_path = next(iter(_outcome_candidates(config)), None)
+
+    if longitudinal is None or source_path is None or outcome_path is None:
+        if source_errors:
+            details = _format_source_errors(source_errors)
+            raise RuntimeError(
+                "No usable longitudinal table found for target-trial emulation. "
+                "The table must contain stay_id, a time column, and hemoglobin before t0. "
+                f"Checked candidates:\n{details}"
+            )
         if not allow_synth:
             raise FileNotFoundError("No longitudinal/outcome source found and synthetic fallback is disabled.")
         longitudinal, outcomes = make_synthetic_longitudinal(config)
@@ -63,9 +262,15 @@ def load_longitudinal_and_outcomes(config: dict[str, Any]) -> tuple[pd.DataFrame
         return longitudinal, outcomes, metadata
 
     try:
-        longitudinal = read_table(source_path)
         outcomes = read_table(outcome_path)
-        metadata.update({"source": "real_or_imported", "longitudinal_path": str(source_path), "outcome_path": str(outcome_path)})
+        metadata.update(
+            {
+                "source": "real_or_imported",
+                "longitudinal_path": str(source_path),
+                "outcome_path": str(outcome_path),
+                "normalization_notes": normalization_notes,
+            }
+        )
         return longitudinal, outcomes, metadata
     except Exception as exc:
         if not allow_synth:
@@ -89,7 +294,8 @@ def first_eligible_times(longitudinal: pd.DataFrame, config: dict[str, Any]) -> 
     required = {id_col, time_col, hb_col}
     missing = required - set(longitudinal.columns)
     if missing:
-        raise RuntimeError(f"Longitudinal table missing target-trial columns: {sorted(missing)}")
+        preview = [str(c) for c in longitudinal.columns[:80]]
+        raise RuntimeError(f"Longitudinal table missing target-trial columns: {sorted(missing)}. Available columns: {preview}")
 
     df = longitudinal.copy()
     if "age" in df.columns:
