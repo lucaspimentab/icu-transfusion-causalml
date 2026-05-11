@@ -1,5 +1,0 @@
-method,estimand,n_pairs,treated_mean,control_mean,effect,phenotype
-legacy_nearest_neighbor_psm,ATT,10009,0.3845539014886602,0.4456988710160855,-0.06114496952742532,
-legacy_nearest_neighbor_psm,ATT_by_phenotype,121,0.35537190082644626,0.47107438016528924,-0.11570247933884298,0.0
-legacy_nearest_neighbor_psm,ATT_by_phenotype,2936,0.4502724795640327,0.5006811989100818,-0.05040871934604905,1.0
-legacy_nearest_neighbor_psm,ATT_by_phenotype,6952,0.357307249712313,0.42203682393555814,-0.06472957422324511,2.0

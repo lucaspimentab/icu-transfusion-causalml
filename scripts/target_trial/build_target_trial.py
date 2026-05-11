@@ -1,0 +1,248 @@
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.common.target_trial_utils import (  # noqa: E402
+    candidate_feature_columns,
+    existing_table,
+    load_trial_config,
+    make_synthetic_longitudinal,
+    output_root,
+    read_table,
+    save_table,
+    stable_split_id,
+    write_json,
+)
+
+
+def _path_from_config(config: dict[str, Any], key: str, default: str) -> Path:
+    value = config.get("paths", {}).get(key, default)
+    path = Path(value)
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    return path
+
+
+def load_longitudinal_and_outcomes(config: dict[str, Any]) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+    processed = _path_from_config(config, "processed_dir", "outputs/causal_inference/processed")
+    timegrid = _path_from_config(config, "timegrid_dir", "dataset/timegrid_features")
+    outcomes_file = _path_from_config(config, "outcomes_file", "dataset/outputs_outcomes/outcomes_by_stay_full.csv")
+    candidates = [
+        processed / "raw_temporal.parquet",
+        timegrid,
+    ]
+    source_path = existing_table([p for p in candidates if p.is_file()])
+    if source_path is None and timegrid.exists():
+        files = sorted([p for p in timegrid.rglob("*") if p.suffix.lower() in {".parquet", ".csv", ".pkl", ".pickle"}])
+        source_path = files[0] if files else None
+
+    outcome_candidates = [
+        processed / "outcomes.parquet",
+        outcomes_file,
+    ]
+    outcome_path = existing_table([p for p in outcome_candidates if p.exists()])
+
+    trial = config.get("target_trial", {})
+    allow_synth = bool(trial.get("allow_synthetic_fallback", True))
+    metadata: dict[str, Any] = {"synthetic": False}
+    if source_path is None or outcome_path is None:
+        if not allow_synth:
+            raise FileNotFoundError("No longitudinal/outcome source found and synthetic fallback is disabled.")
+        longitudinal, outcomes = make_synthetic_longitudinal(config)
+        metadata.update({"synthetic": True, "source": "synthetic"})
+        return longitudinal, outcomes, metadata
+
+    try:
+        longitudinal = read_table(source_path)
+        outcomes = read_table(outcome_path)
+        metadata.update({"source": "real_or_imported", "longitudinal_path": str(source_path), "outcome_path": str(outcome_path)})
+        return longitudinal, outcomes, metadata
+    except Exception as exc:
+        if not allow_synth:
+            raise
+        longitudinal, outcomes = make_synthetic_longitudinal(config)
+        metadata.update({"synthetic": True, "source": "synthetic_after_read_error", "read_error": str(exc)})
+        return longitudinal, outcomes, metadata
+
+
+def first_eligible_times(longitudinal: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+    elig = config["target_trial"]["eligibility"]
+    tt = config["target_trial"]["time_zero"]
+    id_col = tt.get("id_col", "stay_id")
+    time_col = tt.get("time_col", "time_min")
+    subject_col = tt.get("subject_col", "subject_id")
+    hb_col = elig.get("hemoglobin_col", "hemoglobin")
+    threshold = float(elig.get("hemoglobin_threshold", 8.0))
+    min_age = float(elig.get("min_age", 18))
+    min_pre_min = float(elig.get("min_pre_hours", 6)) * 60.0
+
+    required = {id_col, time_col, hb_col}
+    missing = required - set(longitudinal.columns)
+    if missing:
+        raise RuntimeError(f"Longitudinal table missing target-trial columns: {sorted(missing)}")
+
+    df = longitudinal.copy()
+    if "age" in df.columns:
+        df = df[pd.to_numeric(df["age"], errors="coerce") >= min_age]
+    df[time_col] = pd.to_numeric(df[time_col], errors="coerce")
+    df[hb_col] = pd.to_numeric(df[hb_col], errors="coerce")
+    df = df.dropna(subset=[id_col, time_col, hb_col])
+    low = df[df[hb_col] <= threshold].sort_values([id_col, time_col])
+    first = low.groupby(id_col, as_index=False).first()
+    first = first[[id_col, time_col] + ([subject_col] if subject_col in first.columns else [])].rename(columns={time_col: "t0"})
+    starts = df.groupby(id_col, as_index=False)[time_col].min().rename(columns={time_col: "first_observed_time"})
+    first = first.merge(starts, on=id_col, how="left")
+    first["pre_observation_minutes"] = first["t0"] - first["first_observed_time"]
+    first = first[first["pre_observation_minutes"] >= min_pre_min].copy()
+    first["eligible"] = 1
+    first["eligibility_rule"] = f"{hb_col} <= {threshold:g}"
+    return first
+
+
+def assign_treatment(longitudinal: pd.DataFrame, eligibility: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+    trt = config["target_trial"]["treatment"]
+    tt = config["target_trial"]["time_zero"]
+    id_col = tt.get("id_col", "stay_id")
+    time_col = tt.get("time_col", "time_min")
+    event_col = trt.get("event_col", "rbc_transfusion_flag")
+    fallback_col = trt.get("fallback_treatment_col", "transfused")
+    fallback_time_col = trt.get("fallback_treatment_time_col", "t0")
+    window_min = float(trt.get("window_hours", 6)) * 60.0
+    out = eligibility.copy()
+
+    if event_col in longitudinal.columns:
+        events = longitudinal[[id_col, time_col, event_col]].copy()
+        events[event_col] = pd.to_numeric(events[event_col], errors="coerce").fillna(0)
+        events = events[events[event_col] > 0]
+        merged = out[[id_col, "t0"]].merge(events, on=id_col, how="left")
+        merged = merged[(merged[time_col] >= merged["t0"]) & (merged[time_col] <= merged["t0"] + window_min)]
+        tx = merged.groupby(id_col, as_index=False)[time_col].min().rename(columns={time_col: "treatment_time"})
+        out = out.merge(tx, on=id_col, how="left")
+        out["transfused"] = out["treatment_time"].notna().astype(int)
+        out["treatment_source"] = event_col
+        return out
+
+    fallback_cols = [c for c in [id_col, fallback_col, fallback_time_col] if c in longitudinal.columns]
+    if fallback_col in fallback_cols:
+        tmp = longitudinal[fallback_cols].drop_duplicates(id_col)
+        out = out.merge(tmp, on=id_col, how="left")
+        out["transfused"] = pd.to_numeric(out[fallback_col], errors="coerce").fillna(0).astype(int)
+        if fallback_time_col in out.columns:
+            tx_time = pd.to_numeric(out[fallback_time_col], errors="coerce")
+            out.loc[(out["transfused"] == 1) & ((tx_time < out["t0"]) | (tx_time > out["t0"] + window_min)), "transfused"] = 0
+            out["treatment_time"] = tx_time.where(out["transfused"] == 1, np.nan)
+        out["treatment_source"] = fallback_col
+        return out
+
+    raise RuntimeError("No transfusion event or fallback treatment column found.")
+
+
+def aggregate_pre_t0(longitudinal: pd.DataFrame, trial: pd.DataFrame, config: dict[str, Any]) -> pd.DataFrame:
+    tt = config["target_trial"]["time_zero"]
+    feat = config["target_trial"]["features"]
+    elig = config["target_trial"]["eligibility"]
+    id_col = tt.get("id_col", "stay_id")
+    time_col = tt.get("time_col", "time_min")
+    lookback_min = float(elig.get("lookback_hours", 48)) * 60.0
+    temporal = [c for c in feat.get("temporal", []) if c in longitudinal.columns]
+    static = [c for c in feat.get("static", []) if c in longitudinal.columns]
+
+    merged = longitudinal.merge(trial[[id_col, "t0"]], on=id_col, how="inner")
+    merged[time_col] = pd.to_numeric(merged[time_col], errors="coerce")
+    pre = merged[(merged[time_col] < merged["t0"]) & (merged[time_col] >= merged["t0"] - lookback_min)].copy()
+    rows = []
+    for stay_id, group in pre.groupby(id_col):
+        row: dict[str, Any] = {id_col: stay_id}
+        group = group.sort_values(time_col)
+        for col in static:
+            values = group[col].dropna()
+            row[col] = values.iloc[-1] if len(values) else np.nan
+        for col in temporal:
+            x = pd.to_numeric(group[col], errors="coerce")
+            t = pd.to_numeric(group[time_col], errors="coerce") / 60.0
+            finite = x.notna() & t.notna()
+            vals = x[finite]
+            tt_vals = t[finite]
+            prefix = col
+            row[f"{prefix}_mean"] = float(vals.mean()) if len(vals) else np.nan
+            row[f"{prefix}_median"] = float(vals.median()) if len(vals) else np.nan
+            row[f"{prefix}_min"] = float(vals.min()) if len(vals) else np.nan
+            row[f"{prefix}_max"] = float(vals.max()) if len(vals) else np.nan
+            row[f"{prefix}_std"] = float(vals.std(ddof=0)) if len(vals) else np.nan
+            row[f"{prefix}_first"] = float(vals.iloc[0]) if len(vals) else np.nan
+            row[f"{prefix}_last"] = float(vals.iloc[-1]) if len(vals) else np.nan
+            row[f"{prefix}_delta"] = float(vals.iloc[-1] - vals.iloc[0]) if len(vals) > 1 else 0.0
+            row[f"{prefix}_n"] = int(len(vals))
+            if len(vals) > 1 and float(tt_vals.max() - tt_vals.min()) > 1e-8:
+                row[f"{prefix}_slope"] = float(np.polyfit(tt_vals.to_numpy(), vals.to_numpy(), 1)[0])
+            else:
+                row[f"{prefix}_slope"] = 0.0
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+
+def build_target_trial(config_dir: str) -> None:
+    config = load_trial_config(config_dir)
+    out_root = output_root(config)
+    proc = out_root / "processed"
+    longitudinal, outcomes, metadata = load_longitudinal_and_outcomes(config)
+    eligibility = first_eligible_times(longitudinal, config)
+    treatment = assign_treatment(longitudinal, eligibility, config)
+    features = aggregate_pre_t0(longitudinal, treatment, config)
+
+    id_col = config["target_trial"]["time_zero"].get("id_col", "stay_id")
+    primary = config["target_trial"]["outcomes"].get("primary", "mortality_anytime")
+    secondary = [c for c in config["target_trial"]["outcomes"].get("secondary", []) if c in outcomes.columns]
+    keep_outcomes = [id_col] + [c for c in [primary] + secondary if c in outcomes.columns]
+    trial = treatment.merge(features, on=id_col, how="inner").merge(outcomes[keep_outcomes].drop_duplicates(id_col), on=id_col, how="left")
+    trial = trial.dropna(subset=[primary, "transfused"]).copy()
+
+    split = config["target_trial"].get("split", {})
+    seed = int(config["target_trial"].get("seed", 42))
+    discovery_fraction = float(split.get("discovery_fraction", 0.7))
+    split_col = "subject_id" if "subject_id" in trial.columns else id_col
+    trial["analysis_split"] = [stable_split_id(v, seed, discovery_fraction) for v in trial[split_col]]
+    trial["source"] = metadata.get("source", "unknown")
+
+    outcome_cols = [primary] + secondary
+    feature_cols = candidate_feature_columns(trial, outcome_cols)
+    save_table(eligibility, proc / "eligibility.parquet")
+    save_table(treatment, proc / "treatment_assignment.parquet")
+    save_table(trial, proc / "trial_dataset.parquet")
+    write_json(
+        proc / "target_trial_metadata.json",
+        {
+            **metadata,
+            "n_eligible": int(len(eligibility)),
+            "n_trial": int(len(trial)),
+            "n_treated": int(trial["transfused"].sum()),
+            "n_control": int((1 - trial["transfused"]).sum()),
+            "primary_outcome": primary,
+            "feature_columns": feature_cols,
+            "outcome_columns": outcome_cols,
+            "design": "target_trial_emulation",
+            "warning": "Use only as confirmatory if all included features are pre-t0.",
+        },
+    )
+    print(f"target_trial_complete n={len(trial)} treated={int(trial['transfused'].sum())} controls={int((1-trial['transfused']).sum())}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Build target-trial emulation dataset with strict pre-t0 features.")
+    parser.add_argument("--config-dir", default="configs")
+    args = parser.parse_args()
+    build_target_trial(args.config_dir)
+
+
+if __name__ == "__main__":
+    main()

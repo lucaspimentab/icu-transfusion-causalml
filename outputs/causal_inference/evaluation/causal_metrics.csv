@@ -1,9 +1,0 @@
-method,estimand,n_pairs,treated_mean,control_mean,effect,phenotype,source_file,ate,att,optional_library_available,n,cate_mean,cate_median,cate_sd
-legacy_nearest_neighbor_psm,ATT,10009.0,0.3845539014886602,0.4456988710160855,-0.0611449695274253,,effect_estimates_psm.csv,,,,,,,
-legacy_nearest_neighbor_psm,ATT_by_phenotype,121.0,0.3553719008264462,0.4710743801652892,-0.1157024793388429,0.0,effect_estimates_psm.csv,,,,,,,
-legacy_nearest_neighbor_psm,ATT_by_phenotype,2936.0,0.4502724795640327,0.5006811989100818,-0.050408719346049,1.0,effect_estimates_psm.csv,,,,,,,
-legacy_nearest_neighbor_psm,ATT_by_phenotype,6952.0,0.357307249712313,0.4220368239355581,-0.0647295742232451,2.0,effect_estimates_psm.csv,,,,,,,
-causal_forest_fallback_t_learner_gbdt,,,,,,,cate_estimates.csv,0.0118924332617541,-0.0029892725313927,False,,,,
-,,,,,,0.0,effect_by_phenotype.csv,,,,137.0,-0.0504806544564387,-0.0230455049900191,0.1113560000357668
-,,,,,,1.0,effect_by_phenotype.csv,,,,2991.0,0.0142151254426967,0.0100075560321486,0.1117619871174605
-,,,,,,2.0,effect_by_phenotype.csv,,,,7511.0,-0.0089740994541421,0.0034810276220263,0.0948570137922804
