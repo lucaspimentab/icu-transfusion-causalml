@@ -29,6 +29,7 @@ def _enough_overlap(df: pd.DataFrame, labels: pd.DataFrame) -> bool:
 
 def load_or_create_k2(df: pd.DataFrame, feature_cols: list[str], seed: int) -> tuple[pd.DataFrame, str]:
     candidates = [
+        REPO_ROOT / "outputs" / "phenotypes" / "scan_group_assignments.parquet",
         REPO_ROOT / "outputs" / "causal_inference" / "phenotypes" / "scan_group_assignments.parquet",
         REPO_ROOT / "outputs" / "causal_inference" / "phenotypes" / "clusters.parquet",
     ]
@@ -41,6 +42,10 @@ def load_or_create_k2(df: pd.DataFrame, feature_cols: list[str], seed: int) -> t
             continue
         if "stay_id" not in table.columns:
             continue
+        if "cluster_k2" in table.columns:
+            labels = table[["stay_id", "cluster_k2"]].drop_duplicates("stay_id").rename(columns={"cluster_k2": "k2_phenotype"})
+            if _enough_overlap(df, labels):
+                return labels, str(path)
         if "k" in table.columns and "cluster" in table.columns:
             sub = table[pd.to_numeric(table["k"], errors="coerce") == 2].copy()
             if not sub.empty:
@@ -52,7 +57,8 @@ def load_or_create_k2(df: pd.DataFrame, feature_cols: list[str], seed: int) -> t
             if _enough_overlap(df, labels):
                 return labels, str(path)
 
-    return _internal_kmeans_k2(df, feature_cols, seed), "internal_unsupervised_kmeans_k2"
+    # If no phenotypes found, fail instead of creating internal K-means
+    raise RuntimeError("No K=2 phenotypes found from article/cluster-transfusion. Cannot proceed with internal clustering.")
 
 
 def run_k2_effects(config_dir: str) -> None:

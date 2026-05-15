@@ -327,12 +327,17 @@ def candidate_feature_columns(df: pd.DataFrame, outcome_cols: list[str]) -> list
         "treatment_time",
         "eligibility_rule",
         "eligible",
+        "first_observed_time",
+        "pre_observation_minutes",
+        "_fallback_treatment_time",
     } | set(outcome_cols)
     cols = []
     for col in df.columns:
         if col in exclude:
             continue
         if col.startswith("post_") or col.endswith("_post_mean"):
+            continue
+        if col.startswith("_") or col.endswith("_n"):
             continue
         if pd.api.types.is_numeric_dtype(df[col]) or df[col].dtype == object:
             cols.append(col)

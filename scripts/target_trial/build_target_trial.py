@@ -473,6 +473,7 @@ def aggregate_pre_t0(longitudinal: pd.DataFrame, trial: pd.DataFrame, config: di
     lookback_min = float(elig.get("lookback_hours", 48)) * 60.0
     temporal = [c for c in feat.get("temporal", []) if c in longitudinal.columns]
     static = [c for c in feat.get("static", []) if c in longitudinal.columns]
+    aggregations = feat.get("aggregations", [])
 
     merged = longitudinal.merge(trial[[id_col, "t0"]], on=id_col, how="inner")
     merged[time_col] = pd.to_numeric(merged[time_col], errors="coerce")
@@ -491,18 +492,27 @@ def aggregate_pre_t0(longitudinal: pd.DataFrame, trial: pd.DataFrame, config: di
             vals = x[finite]
             tt_vals = t[finite]
             prefix = col
-            row[f"{prefix}_mean"] = float(vals.mean()) if len(vals) else np.nan
-            row[f"{prefix}_median"] = float(vals.median()) if len(vals) else np.nan
-            row[f"{prefix}_min"] = float(vals.min()) if len(vals) else np.nan
-            row[f"{prefix}_max"] = float(vals.max()) if len(vals) else np.nan
-            row[f"{prefix}_std"] = float(vals.std(ddof=0)) if len(vals) else np.nan
-            row[f"{prefix}_first"] = float(vals.iloc[0]) if len(vals) else np.nan
-            row[f"{prefix}_last"] = float(vals.iloc[-1]) if len(vals) else np.nan
-            row[f"{prefix}_delta"] = float(vals.iloc[-1] - vals.iloc[0]) if len(vals) > 1 else 0.0
-            row[f"{prefix}_n"] = int(len(vals))
-            if len(vals) > 1 and float(tt_vals.max() - tt_vals.min()) > 1e-8:
+            if "mean" in aggregations:
+                row[f"{prefix}_mean"] = float(vals.mean()) if len(vals) else np.nan
+            if "median" in aggregations:
+                row[f"{prefix}_median"] = float(vals.median()) if len(vals) else np.nan
+            if "min" in aggregations:
+                row[f"{prefix}_min"] = float(vals.min()) if len(vals) else np.nan
+            if "max" in aggregations:
+                row[f"{prefix}_max"] = float(vals.max()) if len(vals) else np.nan
+            if "std" in aggregations:
+                row[f"{prefix}_std"] = float(vals.std(ddof=0)) if len(vals) else np.nan
+            if "first" in aggregations:
+                row[f"{prefix}_first"] = float(vals.iloc[0]) if len(vals) else np.nan
+            if "last" in aggregations:
+                row[f"{prefix}_last"] = float(vals.iloc[-1]) if len(vals) else np.nan
+            if "delta" in aggregations:
+                row[f"{prefix}_delta"] = float(vals.iloc[-1] - vals.iloc[0]) if len(vals) > 1 else 0.0
+            if "n" in aggregations:
+                row[f"{prefix}_n"] = int(len(vals))
+            if "slope" in aggregations and len(vals) > 1 and float(tt_vals.max() - tt_vals.min()) > 1e-8:
                 row[f"{prefix}_slope"] = float(np.polyfit(tt_vals.to_numpy(), vals.to_numpy(), 1)[0])
-            else:
+            elif "slope" in aggregations:
                 row[f"{prefix}_slope"] = 0.0
         rows.append(row)
     return pd.DataFrame(rows)

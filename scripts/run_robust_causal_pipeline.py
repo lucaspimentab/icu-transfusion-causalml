@@ -36,10 +36,7 @@ def main() -> None:
     steps = [
         ("build_target_trial", [py, "scripts/target_trial/build_target_trial.py", *config]),
         ("doubly_robust", [py, "scripts/causal_estimands/doubly_robust.py", *config]),
-        ("k2_phenotype_effects", [py, "scripts/heterogeneity/k2_phenotype_effects.py", *config]),
-        ("honest_scan_discovery", [py, "scripts/heterogeneity/honest_scan_discovery.py", *config]),
-        ("honest_scan_validation", [py, "scripts/heterogeneity/honest_scan_validation.py", *config]),
-        ("target_trial_report", [py, "scripts/reporting/generate_target_trial_report.py", *config]),
+        ("final_group_inference", [py, "scripts/heterogeneity/final_group_inference.py", *config]),
     ]
     for name, command in steps:
         run_step(name, command, log_dir)

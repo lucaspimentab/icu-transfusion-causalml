@@ -199,9 +199,9 @@ def import_phenotype_outputs(
     print(f"[import] reading {baseline_path}", flush=True)
     baseline = pd.read_parquet(baseline_path)
 
-    drop_from_outcomes = [col for col in ["transfused", "t0_transf"] if col in outcomes_cohort.columns]
+    drop_from_outcomes = [col for col in ["transfused", "t0"] if col in outcomes_cohort.columns]
     outcomes_only = outcomes_cohort.drop(columns=drop_from_outcomes, errors="ignore")
-    cohort = t0.merge(outcomes_only, on="stay_id", how="left")
+    cohort = t0.merge(outcomes_only, on="stay_id", how="left", suffixes=("_t0", "_outcomes"))
     cohort["data_source"] = "phenotype_construction"
     cohort["is_synthetic"] = False
     cohort.to_parquet(proc / "cohort.parquet", index=False)
