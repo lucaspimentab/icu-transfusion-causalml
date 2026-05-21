@@ -1,0 +1,33 @@
+COMMAND: /home/grad/si/22/aliciachaves/miniconda3/bin/python scripts/target_trial/build_target_trial.py --config-dir configs
+
+Traceback (most recent call last):
+  File "/home/grad/si/22/aliciachaves/miniconda3/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 't0'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 574, in <module>
+    main()
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 570, in main
+    build_target_trial(args.config_dir)
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 518, in build_target_trial
+    features = aggregate_pre_t0(longitudinal, treatment, config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 479, in aggregate_pre_t0
+    pre = merged[(merged[time_col] < merged["t0"]) & (merged[time_col] >= merged["t0"] - lookback_min)].copy()
+                                     ~~~~~~^^^^^^
+  File "/home/grad/si/22/aliciachaves/miniconda3/lib/python3.12/site-packages/pandas/core/frame.py", line 4102, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/grad/si/22/aliciachaves/miniconda3/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 't0'
+
+RETURN_CODE: 1

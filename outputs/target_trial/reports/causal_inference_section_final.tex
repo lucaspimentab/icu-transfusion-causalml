@@ -1,0 +1,70 @@
+\section{Inferencia causal e efeitos heterogeneos da transfusao}
+
+A analise causal foi formulada no arcabouco de desfechos potenciais. Para cada paciente, define-se $Y(1)$ como o desfecho potencial sob transfusao de hemacias e $Y(0)$ como o desfecho potencial sob nao transfusao. O efeito individual e $Y_i(1)-Y_i(0)$, enquanto os efeitos medios sao estimados em subpopulacoes clinicamente definidas. Nesta analise, o tratamento e sempre a transfusao ($A=1$) versus controle ($A=0$); os grupos B1/B2/M1/M2/M3 nao sao tratamentos, mas estratos fisiologicos usados para estudar heterogeneidade de efeito.
+
+Associacoes simples entre transfusao e mortalidade sao insuficientes porque a indicacao transfusional e fortemente dependente da gravidade clinica. Pacientes transfundidos podem diferir dos controles por anemia, instabilidade hemodinamica, disfuncao organica, sangramento, procedimentos e suporte intensivo. Esse problema caracteriza confundimento por indicacao.
+
+O DAG conceitual considerado inclui variaveis estaticas $V$, trajetorias fisiologicas pre-intervencao $X_t$, tratamento $A$ e desfecho $Y$. As principais relacoes sao $V \rightarrow A$, $V \rightarrow Y$, $X_t \rightarrow A$, $X_t \rightarrow Y$ e $A \rightarrow Y$, alem da dependencia temporal $X_t \rightarrow X_{t+1}$. Assim, o ajuste causal deve usar apenas informacao anterior a $t_0$.
+
+Foi emulado um target trial observacional. O ponto $t_0$ representa o momento de decisao transfusional. Foram construidas features temporais e estaticas antes de $t_0$, sem incluir informacao posterior ao tratamento. O desfecho primario foi mortalidade. A coorte final incluiu 1484 pacientes, sendo 506 transfundidos e 978 controles.
+
+O estimador principal foi AIPW (augmented inverse probability weighting), tambem chamado doubly robust, combinando modelo de tratamento e modelo de desfecho. Foram tambem reportados ATT, IPTW e overlap weighted difference. O efeito global foi fraco e nao significativo: AIPW ATE=0.040, IC95\% [-0.027, 0.117]. A mortalidade bruta foi 0.441 nos transfundidos e 0.451 nos controles.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Efeitos causais estimados nos grupos finais do scan.}
+\begin{tabular}{llrrr}
+\toprule
+Grupo & Fenotipo & $n$ & AIPW ATE & IC95\% \\
+\midrule
+B1 & Anemia dinamica compensada & 151 & -0.309 & [-0.537, -0.106] \\
+B2 & Beneficio mais especifico & 117 & -0.347 & [-0.575, -0.145] \\
+M1 & Estresse hemodinamico & 328 & 0.240 & [0.101, 0.383] \\
+M2 & Risco cardiorrenal & 109 & 0.449 & [0.140, 0.796] \\
+M3 & Hb sem queda relevante & 219 & 0.305 & [0.116, 0.511] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Os grupos B1 e B2 apresentaram evidencia observacional de beneficio. B1 representa anemia dinamica com frequencia cardiaca controlada, queda de hemoglobina e SpO2 final nao elevada. B2 refina B1 ao adicionar pressao arterial media baixa/moderada. Os grupos M1, M2 e M3 apresentaram sinal de maleficio: M1 representa ascensao da frequencia cardiaca e pico de pressao arterial media; M2 adiciona variabilidade renal; M3 identifica ausencia de queda relevante da hemoglobina.
+
+A validacao discovery/validation mostrou direcao consistente para B1, B2, M1 e M3; M2 apresentou direcao positiva em discovery e validacao, com maior incerteza em discovery e sinal forte na validacao.
+
+\subsection{Contrafactuais individuais}
+
+O componente contrafactual da analise responde a uma pergunta diferente da comparacao observada entre grupos. A pergunta nao e apenas ``qual foi a mortalidade entre transfundidos e controles?'', mas sim: para um paciente com o mesmo estado fisiologico pre-$t_0$, qual seria o risco esperado sob transfusao e qual seria o risco esperado sob nao transfusao?
+
+Formalmente, para cada paciente $i$ com covariaveis pre-tratamento $X_i$, foram estimadas duas funcoes de risco:
+
+\[
+\hat\mu_1(X_i) = \widehat{E}[Y_i \mid A_i=1, X_i],
+\]
+
+\[
+\hat\mu_0(X_i) = \widehat{E}[Y_i \mid A_i=0, X_i].
+\]
+
+A partir dessas duas quantidades, calcula-se:
+
+\[
+\widehat{ITE}_i = \hat\mu_1(X_i)-\hat\mu_0(X_i).
+\]
+
+Assim, se $\widehat{ITE}_i<0$, o modelo estima que, para aquele perfil fisiologico, o risco de mortalidade seria menor sob transfusao do que sob nao transfusao. Se $\widehat{ITE}_i>0$, o modelo estima que o risco seria maior sob transfusao. Como o desfecho e binario, esses valores devem ser lidos como diferenca absoluta de risco, em pontos percentuais, e nao como garantia de sobrevivencia ou morte para um individuo especifico.
+
+Por exemplo, para um paciente com trajetoria compativel com B1, a interpretacao correta e: mantendo fixas as informacoes disponiveis antes de $t_0$, o modelo estima menor mortalidade esperada no cenario ``transfundir'' do que no cenario ``nao transfundir''. No grupo B1, esse efeito medio estimado por AIPW foi de $-0{,}309$, isto e, aproximadamente $-30{,}9$ pontos percentuais. Isso nao significa que todo paciente B1 necessariamente se beneficiaria, mas indica que, em media, pacientes com esse padrao fisiologico apresentaram risco contrafactual estimado menor sob transfusao.
+
+De modo analogo, para um paciente com trajetoria compativel com B2, o resultado pode ser descrito como um subfenotipo mais especifico de beneficio: anemia dinamica, frequencia cardiaca controlada, SpO2 final nao elevada e pressao arterial media baixa/moderada. Nesse estrato, o efeito medio estimado foi de $-0{,}347$, sugerindo reducao absoluta de risco de aproximadamente $34{,}7$ pontos percentuais sob transfusao, dentro das hipoteses causais do modelo.
+
+Nos grupos M1, M2 e M3, a leitura contrafactual e oposta. Para um paciente com perfil M1, caracterizado por aumento da frequencia cardiaca e pico de pressao arterial media elevado, o modelo estima maior risco sob transfusao do que sob nao transfusao; o AIPW ATE foi $+0{,}240$. Em M2, que acrescenta variabilidade de creatinina ao padrao de estresse hemodinamico, o efeito estimado foi $+0{,}449$, sugerindo um estrato de maior vulnerabilidade cardiorrenal. Em M3, definido por ausencia de queda relevante da hemoglobina, o efeito estimado foi $+0{,}305$, compativel com a hipotese de que a transfusao pode estar menos alinhada a correcao de anemia dinamica e mais associada a indicacao residual ou gravidade nao medida.
+
+Essas frases contrafactuais devem sempre ser formuladas de maneira probabilistica. A afirmacao adequada nao e ``este paciente teria sobrevivido se fosse transfundido'', mas sim ``para pacientes com covariaveis semelhantes, o risco estimado de mortalidade sob transfusao foi menor do que sob nao transfusao''. Da mesma forma, nos grupos de maleficio, a conclusao adequada e ``o risco estimado sob transfusao foi maior'', e nao que a transfusao causou necessariamente a morte de um individuo especifico.
+
+O motivo e o problema fundamental da inferencia causal: para cada paciente, apenas um desfecho potencial e observado. Se o paciente foi transfundido, observa-se $Y_i(1)$ e $Y_i(0)$ permanece contrafactual. Se o paciente nao foi transfundido, observa-se $Y_i(0)$ e $Y_i(1)$ permanece contrafactual. Portanto, $\widehat{ITE}_i$ e uma quantidade modelada, nao observada diretamente. A evidencia mais robusta do estudo deve ser interpretada no nivel dos efeitos medios por grupo, enquanto os contrafactuais individuais funcionam como uma ferramenta de explicacao e estratificacao de risco.
+
+A validade dessas estimativas depende das hipoteses usuais de inferencia causal observacional: consistencia, positividade, ausencia de interferencia entre pacientes, alinhamento temporal correto e ignorabilidade condicional apos ajuste por covariaveis pre-$t_0$. Em particular, a ignorabilidade condicional exige que nao existam confundidores importantes nao medidos que afetem simultaneamente a decisao de transfundir e a mortalidade. Como essa hipotese nao pode ser verificada diretamente em dados observacionais de UTI, os contrafactuais individuais devem ser apresentados como geradores de hipotese, nao como recomendacao clinica automatica.
+
+Em relacao ao artigo anterior, os clusters fisiologicos e regras associativas do projeto cluster-transfusion foram tratados como contexto e analise de ponte. O K=2 antigo nao separou claramente efeito causal no target trial atual. As regras antigas de beneficio nao se reproduziram nesta coorte causal restrita, enquanto parte dos antigos grupos de risco se alinhou aos novos grupos M1/M2/M3. Portanto, a interpretacao final e que o novo scan causal refina os achados fisiologicos previos, em vez de simplesmente reproduzi-los.
+
+Esses resultados permanecem observacionais e geradores de hipotese. Eles dependem de ignorabilidade condicional, consistencia, positividade, qualidade dos modelos de nuisance e ausencia de confundimento residual. Alguns grupos apresentam desequilibrio residual de covariaveis, reduzindo a confianca causal absoluta. Assim, os achados nao devem ser apresentados como regra clinica definitiva, mas como evidencia de heterogeneidade causal estimada a ser validada externamente.

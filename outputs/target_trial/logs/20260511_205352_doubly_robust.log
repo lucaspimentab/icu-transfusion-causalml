@@ -1,0 +1,5 @@
+COMMAND: /home/grad/si/22/aliciachaves/miniconda3/bin/python scripts/causal_estimands/doubly_robust.py --config-dir configs
+
+doubly_robust_complete n=1484
+
+RETURN_CODE: 0

@@ -1,0 +1,13 @@
+{
+  "bootstrap": 5000,
+  "embedding": "minirocket",
+  "k": 2,
+  "legacy_runs_root": "C:\\Users\\lucas\\OneDrive\\Documentos\\Programas\\One\\OneDrive\\Documentos\\Programas\\medDreamer\\medDreamer\\cluster-transfusion\\outputs\\runs",
+  "n_target_trial": 1484,
+  "note": "K=2 labels are reconstructed from legacy MiniRocket embeddings using KMeans(n_clusters=2, n_init=20, random_state=seed), matching the previous reporting script.",
+  "runs": [
+    "run_cal03_replace_full_w48",
+    "run_cal03_noreplace_w48"
+  ],
+  "seed": 42
+}

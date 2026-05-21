@@ -1,0 +1,15 @@
+COMMAND: /home/grad/si/22/aliciachaves/miniconda3/bin/python scripts/target_trial/build_target_trial.py --config-dir configs
+
+Traceback (most recent call last):
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 248, in <module>
+    main()
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 244, in main
+    build_target_trial(args.config_dir)
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 199, in build_target_trial
+    eligibility = first_eligible_times(longitudinal, config)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch2/lucasp/uti/inf-causal/scripts/target_trial/build_target_trial.py", line 92, in first_eligible_times
+    raise RuntimeError(f"Longitudinal table missing target-trial columns: {sorted(missing)}")
+RuntimeError: Longitudinal table missing target-trial columns: ['time_min']
+
+RETURN_CODE: 1

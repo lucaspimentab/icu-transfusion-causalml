@@ -1,0 +1,128 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Checagem de vazamento temporal das covariaveis.}
+\label{tab:temporal_leakage}
+\begin{tabular}{rrrr}
+\toprule
+Covariaveis avaliadas & Covariaveis pre-$t_0$ & Possivel vazamento & Resultado \\
+\midrule
+102 & 102 & 0 & Sem vazamento identificado \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Resumo do balanceamento por SMD nos grupos finais.}
+\label{tab:smd_balance}
+\begin{tabular}{lrrrr}
+\toprule
+Grupo & SMD medio antes & SMD medio depois & SMD maximo depois & Variaveis com SMD > 0,1 \\
+\midrule
+Global & 0.156 & 0.050 & 0.137 & 13 \\
+B1 & 0.189 & 0.157 & 0.426 & 62 \\
+B2 & 0.214 & 0.173 & 0.590 & 62 \\
+M1 & 0.157 & 0.080 & 0.279 & 28 \\
+M2 & 0.173 & 0.147 & 0.501 & 57 \\
+M3 & 0.244 & 0.139 & 0.785 & 47 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Diagnostico de positividade e suporte comum.}
+\label{tab:positivity}
+\begin{tabular}{lrrrr}
+\toprule
+Grupo & n & PS medio tratados & PS medio controles & % PS extremo \\
+\midrule
+Global & 1484 & 0.526 & 0.235 & 21.159 \\
+B1 & 151 & 0.474 & 0.248 & 25.166 \\
+B2 & 117 & 0.482 & 0.252 & 24.786 \\
+M1 & 328 & 0.553 & 0.285 & 10.671 \\
+M2 & 109 & 0.577 & 0.387 & 2.752 \\
+M3 & 219 & 0.513 & 0.123 & 47.032 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Desempenho dos modelos auxiliares do AIPW.}
+\label{tab:nuisance_models}
+\begin{tabular}{lrrl}
+\toprule
+Modelo & AUC & Brier Score & Observacao \\
+\midrule
+Propensity score P(A=1|X) & 0.823 & 0.163 & discriminacao moderada/boa \\
+Outcome model E[Y|A,X] & 0.698 & 0.233 & calibracao/discriminacao moderada \\
+Outcome model em tratados & 0.698 & 0.247 & avaliacao no grupo A=1 \\
+Outcome model em controles & 0.704 & 0.226 & avaliacao no grupo A=0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Testes de refutacao dos efeitos causais por grupo.}
+\label{tab:refuters}
+\begin{tabular}{lrrrr}
+\toprule
+Grupo & AIPW original & Placebo treatment & Random common cause & Subset refuter \\
+\midrule
+B1 & -0.309 & -0.082 & -0.320 & -0.310 \\
+B2 & -0.347 & -0.038 & -0.380 & -0.348 \\
+M1 & 0.240 & 0.072 & 0.205 & 0.241 \\
+M2 & 0.449 & 0.237 & 0.381 & 0.441 \\
+M3 & 0.305 & 0.075 & 0.301 & 0.303 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Analise de robustez dos limiares dos grupos finais.}
+\label{tab:threshold_robustness}
+\begin{tabular}{lrlr}
+\toprule
+Grupo & Efeito original & Faixa de efeitos sob perturbacao & Direcao preservada? \\
+\midrule
+B1 & -0.309 & [-0.332; -0.045] & Sim \\
+B2 & -0.347 & [-0.433; -0.002] & Sim \\
+M1 & 0.240 & [0.135; 0.272] & Sim \\
+M2 & 0.449 & [0.271; 0.610] & Sim \\
+M3 & 0.305 & [0.145; 0.489] & Sim \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Sensibilidade aproximada a confundimento nao medido por E-value.}
+\label{tab:evalues}
+\begin{tabular}{lrrrr}
+\toprule
+Grupo & AIPW & IC95% & E-value do efeito & E-value do limite do IC \\
+\midrule
+B1 & -0.309 & [-0.537; -0.106] & 5.41 & 1.91 \\
+B2 & -0.347 & [-0.575; -0.145] & 5.99 & 2.16 \\
+M1 & 0.240 & [0.101; 0.383] & 2.92 & 1.97 \\
+M2 & 0.449 & [0.140; 0.796] & 3.67 & 2.04 \\
+M3 & 0.305 & [0.116; 0.511] & 2.78 & 1.84 \\
+\bottomrule
+\end{tabular}
+\end{table}

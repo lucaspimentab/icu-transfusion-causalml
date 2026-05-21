@@ -1,0 +1,256 @@
+Grupo,rule_text,n,treated,controls,aipw_ate
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,95,32,63,-0.29265354270545035
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,230,73,157,-0.06723847579206274
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,112,34,78,-0.2556261987106939
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,261,79,182,-0.12809315515378453
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,141,36,105,-0.1835930520952588
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,314,83,231,-0.060399943180048654
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,108,38,70,-0.33182924327152946
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,248,81,167,-0.0792691009910011
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,126,40,86,-0.2940054326623686
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,280,87,193,-0.13573314161530325
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,155,42,113,-0.22129787487285307
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,335,91,244,-0.06933577877779486
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,113,39,74,-0.3004778060913926
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,259,85,174,-0.05789651215351484
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,131,41,90,-0.26840548343863074
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,291,91,200,-0.11457642355421645
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,161,43,118,-0.19562786609735205
+B1,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,349,95,254,-0.051791605095609455
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,118,36,82,-0.29220989118149376
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,274,84,190,-0.10785489188420655
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,137,40,97,-0.2793829165779125
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,310,94,216,-0.17295882092830578
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,168,44,124,-0.18557129133463737
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,369,100,269,-0.0932014828339189
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,131,42,89,-0.32455144179941736
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,292,92,200,-0.11556893147214534
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,151,46,105,-0.3092053631194355
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,329,102,227,-0.17686991077483882
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,182,50,132,-0.21753036925318583
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,390,108,282,-0.09911089973780016
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,137,43,94,-0.29335810163406206
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,307,98,209,-0.09512168883051127
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,157,47,110,-0.2825721712049527
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,345,108,237,-0.1570032169423746
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,190,52,138,-0.19078239966796245
+B1,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,412,115,297,-0.07967328726186575
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,130,40,90,-0.2705137649016906
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,309,95,214,-0.07977931300483984
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,153,46,107,-0.26541920150609066
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,354,108,246,-0.13793328663975252
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,188,50,138,-0.17274912275197526
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,423,114,309,-0.06770220488603573
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,145,48,97,-0.2712731321750141
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,330,105,225,-0.08199643448859191
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,169,54,115,-0.2671954503085353
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,376,118,258,-0.13727254701267427
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,204,58,146,-0.18148886445628404
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,447,124,323,-0.0696041710245304
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 97.5,154,52,102,-0.21940923818137734
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND spo2_last <= 102.375,349,114,235,-0.053258568699588955
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5,178,58,120,-0.2225306158241435
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND spo2_last <= 102.375,396,127,269,-0.110259023966625
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 97.5,215,63,152,-0.1416858351084988
+B1,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND spo2_last <= 102.375,473,134,339,-0.04515305394488881
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,51,15,36,-0.27317144625232
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,116,36,80,-0.0052053888529901985
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,72,23,49,-0.3387352621799303
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,160,50,110,-0.08927012568910843
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,79,26,53,-0.4071162340345706
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,183,56,127,-0.08926849322109455
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,61,16,45,-0.26280922309774685
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,136,41,95,-0.15701901019174702
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,85,25,60,-0.2936803414005153
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,185,56,129,-0.1745976582545326
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,92,28,64,-0.35582687642195543
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,209,62,147,-0.16135478703759212
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,82,18,64,-0.1579116945656729
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,169,44,125,-0.04696037989115973
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,110,27,83,-0.19714720527945867
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,227,60,167,-0.07333442000959974
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,118,30,88,-0.24256053068752884
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,253,66,187,-0.06944383991890353
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,61,20,41,-0.3454491101827711
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,129,41,88,-0.028705518413597832
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,82,28,54,-0.38450720535653293
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,173,55,118,-0.10047634033910177
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,91,32,59,-0.4326326660744762
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,199,63,136,-0.09826375194666995
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,71,21,50,-0.32636640241187714
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,149,46,103,-0.16411927620459632
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,96,30,66,-0.33835999505081094
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,199,61,138,-0.17979312607562378
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,105,34,71,-0.38402420284209027
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,226,69,157,-0.1651353159837925
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,92,23,69,-0.21836316213767284
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,183,49,134,-0.06330300643696248
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,121,32,89,-0.2413712651783016
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,243,65,178,-0.08153957295892411
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,131,36,95,-0.27640161289105336
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,272,73,199,-0.07667522057294768
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,66,21,45,-0.2907398414568365
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,136,43,93,-0.0022365818909948943
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,87,29,58,-0.34075890407169973
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,181,58,123,-0.07549176849499765
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,96,33,63,-0.3904792336227032
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,209,67,142,-0.07378834497505607
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,76,22,54,-0.28011116297691385
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,156,48,108,-0.13496753471991046
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,101,31,70,-0.3029603300978221
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,207,64,143,-0.15488132999023724
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,110,35,75,-0.3494452283038332
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,236,73,163,-0.1406265206556631
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,98,24,74,-0.1763706811535444
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,192,51,141,-0.03890222279217745
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,127,33,94,-0.20788062144059807
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,253,68,185,-0.060787876617633574
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,137,37,100,-0.24382136587671124
+B2,heart_rate_max <= 98.6414 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,284,77,207,-0.0563610943470209
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,63,17,46,-0.28422017106117536
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,134,39,95,-0.05765552832853261
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,91,26,65,-0.3244610860386819
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,189,55,134,-0.11943935822602507
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,101,30,71,-0.3807364751083415
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,218,64,154,-0.12236994191784292
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,74,19,55,-0.3000010769875058
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,156,46,110,-0.1946906405397358
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,106,30,76,-0.31194805363006306
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,218,65,153,-0.2109964391871252
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,116,34,82,-0.3620251624242165
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,249,74,175,-0.20145057677921718
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,95,21,74,-0.20123658992103208
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,193,49,144,-0.08575270192258874
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,131,32,99,-0.22740349043117045
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,264,69,195,-0.11341054181521341
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,144,38,106,-0.2328126396856175
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,299,80,219,-0.09781999545550057
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,73,22,51,-0.3431030512210243
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,147,44,103,-0.07363964329544642
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,101,31,70,-0.3630357504138691
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,202,60,142,-0.12709517560953468
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,113,36,77,-0.40408649654857304
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,234,71,163,-0.1277564090428067
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,84,24,60,-0.34929442451614456
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,169,51,118,-0.19805282066630797
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,117,35,82,-0.34689080504804043
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,232,70,162,-0.21325641833945638
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,129,40,89,-0.38435184115355586
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,266,81,185,-0.2021000922537798
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,105,26,79,-0.25007740956932156
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,207,54,153,-0.09757689588124518
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,142,37,105,-0.2627435757205449
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,280,74,206,-0.11824137830734201
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,157,44,113,-0.2618566164479523
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,318,87,231,-0.10230989665897437
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,79,23,56,-0.28759928844655186
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,156,46,110,-0.04835978608073338
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,107,32,75,-0.32093861532657575
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,213,64,149,-0.10784527856784631
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,119,37,82,-0.36416466519438306
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,247,76,171,-0.10841495069356864
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,90,25,65,-0.3001616967499886
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,178,53,125,-0.16960688627398784
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,123,36,87,-0.31105727836393143
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,243,74,169,-0.19248274862789777
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,135,41,94,-0.3500385819033447
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,280,86,194,-0.18272070129963175
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,112,27,85,-0.20545027744911495
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,218,56,162,-0.07431710939401055
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,149,38,111,-0.22860329410630525
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,294,78,216,-0.09841202241957693
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,165,46,119,-0.228906772819161
+B2,heart_rate_max <= 103.833 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,337,93,244,-0.08280783936615148
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,69,19,50,-0.2886109553861691
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,152,45,107,-0.056376912050966
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,98,28,70,-0.3248400305214022
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,210,61,149,-0.11322754583762702
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,111,34,77,-0.3581725315977823
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,247,73,174,-0.10826582057439585
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,81,22,59,-0.34625655091129215
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,178,54,124,-0.1931586520911387
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,114,33,81,-0.3439760844588743
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,244,73,171,-0.20279225262004416
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,129,40,89,-0.35118337480518097
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,285,86,199,-0.17780034260500327
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,103,24,79,-0.24577460067607645
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,219,57,162,-0.0997324499664467
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,141,35,106,-0.2566090476668228
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,296,77,219,-0.11932536507652185
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,160,44,116,-0.22591640464531815
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 2.93986 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,342,92,250,-0.08983786953620235
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,80,25,55,-0.28561758777328655
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,166,51,115,-0.044958292398136264
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,109,34,75,-0.31898691826894193
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,224,67,157,-0.10121236844752442
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,124,41,83,-0.3448317763656179
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,264,81,183,-0.0975553378702247
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,92,28,64,-0.33676121439165124
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,192,60,132,-0.17331263530503374
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,126,39,87,-0.3375206608895417
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,259,79,180,-0.1882400543984089
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,143,47,96,-0.34044561647135996
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,303,94,209,-0.16523144456053734
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,114,30,84,-0.24780732429695726
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,234,63,171,-0.09095791306387387
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,153,41,112,-0.2581451331032196
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,313,83,230,-0.10952750826653815
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,174,51,123,-0.22717064683210933
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,362,100,262,-0.08233568788861026
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,87,27,60,-0.23851709328045606
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,177,54,123,-0.020912563813880174
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,118,38,80,-0.24766095428703172
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,239,74,165,-0.06711956488657503
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,133,45,88,-0.27980119386384733
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.00934376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,281,89,192,-0.06658465806709861
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,99,30,69,-0.29175365472291587
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,203,63,140,-0.14539149377109678
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,135,43,92,-0.2739409021232394
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,274,86,188,-0.15373788162348126
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,152,51,101,-0.28380356361815484
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,321,102,219,-0.13564014373848896
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 97.5,122,32,90,-0.20680407446532098
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 74.7707 AND spo2_last <= 102.375,247,66,181,-0.06804134514261298
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 97.5,163,45,118,-0.20263255153820217
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 78.706 AND spo2_last <= 102.375,331,90,241,-0.07909318841857095
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 97.5,185,56,129,-0.178196858097472
+B2,heart_rate_max <= 109.025 AND heart_rate_delta <= 4.87014 AND hemoglobin_slope <= 0.00534376 AND mbp_mean <= 82.6413 AND spo2_last <= 102.375,385,109,276,-0.05519324768399176
+M1,heart_rate_delta > 2.93986 AND mbp_max > 88.35,587,249,338,0.1493080646366723
+M1,heart_rate_delta > 2.93986 AND mbp_max > 93,346,152,194,0.21141845841570833
+M1,heart_rate_delta > 2.93986 AND mbp_max > 97.65,272,119,153,0.22544041385899383
+M1,heart_rate_delta > 3.905 AND mbp_max > 88.35,563,237,326,0.16643128217072822
+M1,heart_rate_delta > 3.905 AND mbp_max > 93,328,141,187,0.24018396376289144
+M1,heart_rate_delta > 3.905 AND mbp_max > 97.65,257,109,148,0.2719254569578237
+M1,heart_rate_delta > 4.87014 AND mbp_max > 88.35,534,223,311,0.1352049561042726
+M1,heart_rate_delta > 4.87014 AND mbp_max > 93,315,134,181,0.23795697296903404
+M1,heart_rate_delta > 4.87014 AND mbp_max > 97.65,247,104,143,0.26725929907661483
+M2,heart_rate_delta > 2.93986 AND mbp_max > 88.35 AND creatinine_std > 0.12622,223,105,118,0.27092606250815326
+M2,heart_rate_delta > 2.93986 AND mbp_max > 88.35 AND creatinine_std > 0.146,196,88,108,0.33137126695749514
+M2,heart_rate_delta > 2.93986 AND mbp_max > 88.35 AND creatinine_std > 0.16578,167,75,92,0.3316963410849551
+M2,heart_rate_delta > 2.93986 AND mbp_max > 93 AND creatinine_std > 0.12622,133,69,64,0.30206943159669963
+M2,heart_rate_delta > 2.93986 AND mbp_max > 93 AND creatinine_std > 0.146,116,57,59,0.3405810080573237
+M2,heart_rate_delta > 2.93986 AND mbp_max > 93 AND creatinine_std > 0.16578,99,52,47,0.4084157501296405
+M2,heart_rate_delta > 2.93986 AND mbp_max > 97.65 AND creatinine_std > 0.12622,102,53,49,0.3862952423540922
+M2,heart_rate_delta > 2.93986 AND mbp_max > 97.65 AND creatinine_std > 0.146,90,44,46,0.4407103182076972
+M2,heart_rate_delta > 2.93986 AND mbp_max > 97.65 AND creatinine_std > 0.16578,76,39,37,0.4377810400859478
+M2,heart_rate_delta > 3.905 AND mbp_max > 88.35 AND creatinine_std > 0.12622,213,99,114,0.3359178375164336
+M2,heart_rate_delta > 3.905 AND mbp_max > 88.35 AND creatinine_std > 0.146,187,83,104,0.4060045615976271
+M2,heart_rate_delta > 3.905 AND mbp_max > 88.35 AND creatinine_std > 0.16578,159,71,88,0.4139207451402501
+M2,heart_rate_delta > 3.905 AND mbp_max > 93 AND creatinine_std > 0.12622,125,63,62,0.3984101797422687
+M2,heart_rate_delta > 3.905 AND mbp_max > 93 AND creatinine_std > 0.146,109,52,57,0.4492984609493316
+M2,heart_rate_delta > 3.905 AND mbp_max > 93 AND creatinine_std > 0.16578,93,48,45,0.5305948321794305
+M2,heart_rate_delta > 3.905 AND mbp_max > 97.65 AND creatinine_std > 0.12622,94,47,47,0.521576093463191
+M2,heart_rate_delta > 3.905 AND mbp_max > 97.65 AND creatinine_std > 0.146,83,39,44,0.5919284812954257
+M2,heart_rate_delta > 3.905 AND mbp_max > 97.65 AND creatinine_std > 0.16578,70,35,35,0.6026217025197808
+M2,heart_rate_delta > 4.87014 AND mbp_max > 88.35 AND creatinine_std > 0.12622,204,96,108,0.31800743618511346
+M2,heart_rate_delta > 4.87014 AND mbp_max > 88.35 AND creatinine_std > 0.146,178,80,98,0.389021744997298
+M2,heart_rate_delta > 4.87014 AND mbp_max > 88.35 AND creatinine_std > 0.16578,152,68,84,0.39196072400926546
+M2,heart_rate_delta > 4.87014 AND mbp_max > 93 AND creatinine_std > 0.12622,121,61,60,0.40451176947816125
+M2,heart_rate_delta > 4.87014 AND mbp_max > 93 AND creatinine_std > 0.146,105,50,55,0.4582684179290578
+M2,heart_rate_delta > 4.87014 AND mbp_max > 93 AND creatinine_std > 0.16578,91,46,45,0.5377097254187555
+M2,heart_rate_delta > 4.87014 AND mbp_max > 97.65 AND creatinine_std > 0.12622,92,46,46,0.5328606774773088
+M2,heart_rate_delta > 4.87014 AND mbp_max > 97.65 AND creatinine_std > 0.146,81,38,43,0.6064826356776889
+M2,heart_rate_delta > 4.87014 AND mbp_max > 97.65 AND creatinine_std > 0.16578,69,34,35,0.6099905049231247
+M3,hemoglobin_slope > -0.00934376,342,68,274,0.1449450351960147
+M3,hemoglobin_slope > -0.002,219,37,182,0.3053855651991113
+M3,hemoglobin_slope > 0.00534376,53,20,33,0.4891396967766513

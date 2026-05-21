@@ -1,0 +1,7 @@
+{
+  "bootstrap": 300,
+  "estimand_primary": "ATT and ATE reported; subgroup scan uses AIPW pseudo-outcome on honest splits",
+  "estimator": "cross_fitted_aipw_with_overlap_and_iptw",
+  "n": 1484,
+  "n_features": 102
+}

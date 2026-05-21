@@ -1,0 +1,9 @@
+legacy_group_id,direction,name,rule_text,n_in_full_legacy_baseline
+old_B1,benefit,Perfundido amplo com baixa taquicardia,glucose_lab_std <= 0 AND heart_rate_median <= 70 AND spo2_slope > 0.001268,2839
+old_B2,benefit,Anemia dinamica com oxigenacao estavel,glucose_lab_std <= 0 AND hemoglobin_slope <= -0.006063 AND spo2_std <= 0.8245,1326
+old_B3,benefit,Estresse metabolico com perfusao relativa preservada,lactate_std > 0.3523 AND potassium_std <= 0.04242 AND spo2_std <= 0.8245,1280
+old_B4,benefit,Pressao media elevada com inflamacao moderada,mbp_median > 89 AND platelets_slope <= -0.07924 AND urea_std <= 0.6436,1692
+old_M1,harm,Falencia hepatobiliar com estresse metabolico,alkaline_phosphatase_max > 75 AND lactate_slope > 0.0002952,2384
+old_M2,harm,Doenca critica sustentada hepatobiliar-renal,alkaline_phosphatase_mean > 75 AND sapsii_min > 43,2516
+old_M3,harm,Baixo fluxo cardiorrenal com hipotensao diastolica,creatinine_max > 1.6 AND dbp_median <= 52,1550
+old_M4,harm,Falencia progressiva renal e hipoperfusao metabolica,creatinine_max > 1.6 AND lactate_slope > 0.0002952,2131

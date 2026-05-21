@@ -1,0 +1,5 @@
+Modelo,AUC,Brier Score,Average Precision,Observacao
+Propensity score P(A=1|X),0.8233862363296879,0.16250017748569384,0.6575810231921337,discriminacao moderada/boa
+"Outcome model E[Y|A,X]",0.697797898912724,0.23302124194575308,0.6322283554486863,calibracao/discriminacao moderada
+Outcome model em tratados,0.6979511638593545,0.24726959256251674,0.6383283385565852,avaliacao no grupo A=1
+Outcome model em controles,0.7039570638932171,0.22564939592112895,0.6346770266730165,avaliacao no grupo A=0

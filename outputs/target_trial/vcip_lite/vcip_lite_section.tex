@@ -1,0 +1,35 @@
+\subsection{Analise contrafactual variacional exploratoria}
+
+Como extensao exploratoria, foi implementado um modelo inspirado em \textit{Variational Counterfactual Intervention Planning} (VCIP). O objetivo desta etapa nao foi substituir o estimador AIPW, mas estimar, em nivel individual, a probabilidade de atingir o alvo clinico de sobrevivencia sob duas intervencoes alternativas: transfundir e nao transfundir.
+
+Para cada paciente com historico fisiologico pre-$t_0$ denotado por $X_i$, o modelo estima:
+\[
+\widehat{P}(Y_i=0 \mid do(A_i=1), X_i)
+\]
+e
+\[
+\widehat{P}(Y_i=0 \mid do(A_i=0), X_i).
+\]
+
+A diferenca entre essas probabilidades foi definida como vantagem contrafactual de sobrevivencia sob transfusao. Valores positivos indicam que o modelo atribui maior probabilidade de atingir o alvo de sobrevivencia no cenario transfundir; valores negativos indicam maior probabilidade no cenario nao transfundir.
+
+O modelo utiliza um encoder variacional para representar um estado latente $z$, uma cabeca de tratamento, uma cabeca de desfecho e um termo de reconstrucao das covariaveis. Para permitir heterogeneidade, o decoder de outcome inclui interacoes entre tratamento e covariaveis, bem como entre tratamento e o estado latente. A perda de desfecho foi ponderada por propensity score, aproximando a distribuicao interventional em uma analise observacional.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Resultados exploratorios do VCIP-lite nos grupos finais.}
+\begin{tabular}{lrrrr}
+\toprule
+Grupo & $n$ & ITE mortalidade & IC95\% & Vantagem de sobrevivencia \\
+\midrule
+B1 & 151 & -0.093 & [-0.109, -0.077] & 0.093 \\
+B2 & 117 & -0.115 & [-0.130, -0.099] & 0.115 \\
+M1 & 328 & 0.068 & [0.056, 0.080] & -0.068 \\
+M2 & 109 & 0.143 & [0.126, 0.161] & -0.143 \\
+M3 & 219 & 0.075 & [0.064, 0.088] & -0.075 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Os resultados preservaram a direcao da analise causal principal: B1 e B2 apresentaram vantagem contrafactual de sobrevivencia sob transfusao, enquanto M1, M2 e M3 apresentaram desvantagem. As magnitudes foram menores que as estimadas por AIPW, reforcando que o VCIP-lite deve ser interpretado como apoio exploratorio para raciocinio contrafactual individual, nao como estimador causal primario.

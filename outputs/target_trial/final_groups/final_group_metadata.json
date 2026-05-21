@@ -1,0 +1,47 @@
+{
+  "bootstrap": 10000,
+  "groups": [
+    {
+      "description_pt": "Frequencia cardiaca estavel/controlada, hemoglobina em queda e SpO2 final nao alta.",
+      "direction": "benefit",
+      "group_id": "B1",
+      "name": "Stable HR + falling hemoglobin + non-high final SpO2",
+      "role": "primary",
+      "rule_text": "heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND spo2_last <= 97.5"
+    },
+    {
+      "description_pt": "Subgrupo B1 com pressao arterial media baixa/moderada.",
+      "direction": "benefit",
+      "group_id": "B2",
+      "name": "High-specificity benefit phenotype",
+      "role": "sensitivity",
+      "rule_text": "heart_rate_max <= 103.833 AND heart_rate_delta <= 3.905 AND hemoglobin_slope <= -0.002 AND mbp_mean <= 78.706 AND spo2_last <= 97.5"
+    },
+    {
+      "description_pt": "Frequencia cardiaca em ascensao com pico de pressao arterial media elevado.",
+      "direction": "harm",
+      "group_id": "M1",
+      "name": "Rising HR + high maximum MBP",
+      "role": "primary",
+      "rule_text": "heart_rate_delta > 3.905 AND mbp_max > 93"
+    },
+    {
+      "description_pt": "Subgrupo M1 com variabilidade de creatinina elevada.",
+      "direction": "harm",
+      "group_id": "M2",
+      "name": "Cardiorenal high-risk harm phenotype",
+      "role": "sensitivity",
+      "rule_text": "heart_rate_delta > 3.905 AND mbp_max > 93 AND creatinine_std > 0.146"
+    },
+    {
+      "description_pt": "Hemoglobina sem queda relevante no periodo pre-t0.",
+      "direction": "harm",
+      "group_id": "M3",
+      "name": "Hemoglobin not falling",
+      "role": "secondary",
+      "rule_text": "hemoglobin_slope > -0.002"
+    }
+  ],
+  "interpretation": "Final scan-derived groups for hypothesis-generating causal inference.",
+  "outcome": "mortality_anytime"
+}

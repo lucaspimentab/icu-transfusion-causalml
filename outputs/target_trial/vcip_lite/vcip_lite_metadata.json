@@ -1,0 +1,21 @@
+{
+  "device": "cpu",
+  "feature_source": "C:\\Users\\lucas\\OneDrive\\Documentos\\Programas\\One\\OneDrive\\Documentos\\Programas\\icu-transfusion-causalml\\outputs\\target_trial\\processed\\trial_dataset.parquet",
+  "includes_final_group_indicators": true,
+  "includes_treatment_interactions": true,
+  "intervention": "binary transfusion A in {0,1}",
+  "mc_samples": 100,
+  "model": "VCIP-lite variational target-achievement model",
+  "n": 1484,
+  "n_features_encoded": 109,
+  "n_features_raw": 107,
+  "not_main_estimand": true,
+  "outputs": [
+    "vcip_lite_individual_counterfactuals.parquet",
+    "vcip_lite_group_summary.csv",
+    "vcip_lite_metrics.csv",
+    "figures/*.png"
+  ],
+  "target": "survival, Y=0",
+  "uses_ipw_weighted_outcome_loss": true
+}

@@ -1,0 +1,5 @@
+COMMAND: /home/grad/si/22/aliciachaves/miniconda3/bin/python scripts/heterogeneity/honest_scan_validation.py --config-dir configs
+
+honest_scan_validation_complete rules=80
+
+RETURN_CODE: 0

@@ -1,0 +1,14 @@
+{
+  "groups": [
+    "Global",
+    "B1",
+    "B2",
+    "M1",
+    "M2",
+    "M3"
+  ],
+  "n_feature_columns": 102,
+  "n_numeric_features_for_smd": 101,
+  "note": "Diagnostics generated from current target_trial outputs; no new group search was run.",
+  "outcome": "mortality_anytime"
+}

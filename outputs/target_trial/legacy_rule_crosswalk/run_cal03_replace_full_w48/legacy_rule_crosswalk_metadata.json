@@ -1,0 +1,9 @@
+{
+  "baseline_features": "C:\\Users\\lucas\\OneDrive\\Documentos\\Programas\\One\\OneDrive\\Documentos\\Programas\\medDreamer\\medDreamer\\cluster-transfusion\\outputs\\runs\\run_cal03_replace_full_w48\\w48\\features\\baseline_features.parquet",
+  "bootstrap": 5000,
+  "legacy_run_id": "run_cal03_replace_full_w48",
+  "legacy_runs_root": "C:\\Users\\lucas\\OneDrive\\Documentos\\Programas\\One\\OneDrive\\Documentos\\Programas\\medDreamer\\medDreamer\\cluster-transfusion\\outputs\\runs",
+  "note": "Representative legacy rules B1-B4/M1-M4 are applied exactly using legacy baseline_features and evaluated with current target-trial AIPW nuisance estimates.",
+  "outcome": "mortality_anytime",
+  "seed": 42
+}
